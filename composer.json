@@ -1,0 +1,32 @@
+{
+  "name": "deefour/transformer",
+  "version": "0.1.0",
+  "description": "Transform raw input data into consistent, immutable PHP objects",
+  "homepage": "https://github.com/deefour/interactor",
+  "keywords": ["transformer", "deefour", "request data", "raw input", "laravel"],
+  "license": "MIT",
+  "require": {
+    "php": ">=5.5.0"
+  },
+  "require-dev": {
+    "phpspec/phpspec": "2.2.0"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Jason Daly",
+      "email": "jason@deefour.me"
+    }
+  ],
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "Deefour\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Deefour\\Transformer\\Stub\\": "stub/"
+    }
+  }
+}
