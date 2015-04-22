@@ -125,3 +125,18 @@ Finally, individual raw attributes or the entire raw source can be retrieved.
 $transform->raw('title'); //=> 'a whole new world'
 $transform->raw(); //=>  [ 'title' => 'a whole new world', 'price' => '29.95', 'publication_date' => '2010-12-09', 'author' => 'Jason Daly' ]
 ```
+
+## Contribute
+
+- Issue Tracker: https://github.com/deefour/transformer/issues
+- Source Code: https://github.com/deefour/transformer
+
+## Changelog
+
+#### 0.1.0 - April 22, 2015
+
+ - Initial release.
+
+## License
+
+Copyright (c) 2015 [Jason Daly](http://www.deefour.me) ([deefour](https://github.com/deefour)). Released under the [MIT License](http://deefour.mit-license.org/).
