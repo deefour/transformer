@@ -18,7 +18,12 @@ Add Tranformer to your `composer.json` file and run `composer update`. See [Pack
 
 ## Overview
 
-All transformers extend the abstract `Deefour\Transformer\Transformer` class. A tranformer accepts a single array of data during instantiation. The transformer and it's source data are immutable. The transformer can be queried to retrieve "transformed" versions of individual attributes from the source data or the entire data set.
+ - All transformers extend the abstract `Deefour\Transformer\Transformer` class.
+ - A tranformer accepts a single array of data during instantiation.
+ - Attributes on the input source can be cast into specific types.
+ - A method can be created for each attribute to define a transformation of it's raw value.
+ - The input source on the transformer is immutable.
+ - The transformer can be queried to retrieve "transformed" versions of individual attributes from the source data or the entire data set.
 
 ## Example
 
