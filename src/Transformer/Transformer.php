@@ -157,6 +157,15 @@ abstract class Transformer implements JsonSerializable, ArrayAccess {
   }
 
   /**
+   * Fetch an array representation of the transformed attribute source.
+   *
+   * @return array
+   */
+  public function toArray() {
+    return $this->all();
+  }
+
+  /**
    * {@inheritdoc}
    *
    * @return mixed
