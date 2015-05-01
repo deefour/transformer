@@ -54,7 +54,7 @@ abstract class Transformer implements JsonSerializable, ArrayAccess {
     }
 
     // If no transformation has been specified, return the raw input.
-    return $this->source[$attribute];
+    return $this->raw($attribute);
   }
 
   /**
