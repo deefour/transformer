@@ -3,7 +3,7 @@
 use ArrayAccess;
 use JsonSerializable;
 
-abstract class Transformer implements JsonSerializable, ArrayAccess {
+class Transformer implements JsonSerializable, ArrayAccess {
 
   /**
    * The raw input attributes.
