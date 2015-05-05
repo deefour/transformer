@@ -143,6 +143,11 @@ Instantiation and data accecss are otherwise identical to the base transformer.
 
 ## Changelog
 
+#### 0.2.0 - May 5, 2015
+
+ - Made the base transformer a regular class (it used to be abstract)
+ - Added new `MutableTransformer`
+
 #### 0.1.0 - April 22, 2015
 
  - Initial release.
