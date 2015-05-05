@@ -90,7 +90,7 @@ class Transformer implements JsonSerializable, ArrayAccess {
   public function only() {
     $attributes = (array)func_get_args();
 
-    if ( ! empty($attributes) and is_array($attributes[0])) {
+    if ( ! empty($attributes) && is_array($attributes[0])) {
       $attributes = $attributes[0];
     }
 
@@ -210,7 +210,7 @@ class Transformer implements JsonSerializable, ArrayAccess {
    *
    * Pulled from Laravel's Illuminate\Database\Eloquent\Model::castAttribute
    *
-   * @param  mixed   $key
+   * @param  mixed   $attribute
    * @return mixed
    */
   protected function cast($attribute) {
