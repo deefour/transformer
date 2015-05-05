@@ -128,6 +128,14 @@ $transform->raw('title'); //=> 'a whole new world'
 $transform->raw(); //=>  [ 'title' => 'a whole new world', 'price' => '29.95', 'publication_date' => '2010-12-09', 'author' => 'Jason Daly' ]
 ```
 
+## Mutable Transformers
+
+In the base transformer, `__set()`, `offsetSet`, and `offsetUnset` are all null methods. This (lack of) behavior keeps the underlying source data immutable.
+
+A `MutableTransformer` class exists which does implement these methods, allowing additional properties to be added to, or existing properties to be modified on the transformer instance.
+
+Instantiation and data accecss are otherwise identical to the base transformer.
+
 ## Contribute
 
 - Issue Tracker: https://github.com/deefour/transformer/issues
