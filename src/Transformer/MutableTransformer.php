@@ -20,10 +20,24 @@ class MutableTransformer extends Transformer {
     unset($this->source[$offset]);
   }
 
+  /**
+   * {@inheritdoc}
+   *
+   * Magic setter.
+   *
+   * @param  string  $attribute
+   * @param  mixed  $value
+   */
   public function __set($attribute, $value) {
     $this->set($attribute, $value);
   }
 
+  /**
+   * Set an attribute on the source data.
+   *
+   * @param  string  $attribute
+   * @param  mixed  $value
+   */
   public function set($attribute, $value) {
     $this->source[$attribute] = $value;
   }
