@@ -1,8 +1,8 @@
 # Transformer
 
-[![Build Status](https://travis-ci.org/deefour/presenter.svg)](https://travis-ci.org/deefour/transformer)
-[![Packagist Version](http://img.shields.io/packagist/v/deefour/presenter.svg)](https://packagist.org/packages/deefour/transformer)
-[![Code Climate](https://codeclimate.com/github/deefour/presenter/badges/gpa.svg)](https://codeclimate.com/github/deefour/transformer)
+[![Build Status](https://travis-ci.org/deefour/transformer.svg)](https://travis-ci.org/deefour/transformer)
+[![Packagist Version](http://img.shields.io/packagist/v/deefour/transformer.svg)](https://packagist.org/packages/deefour/transformer)
+[![Code Climate](https://codeclimate.com/github/deefour/transformer/badges/gpa.svg)](https://codeclimate.com/github/deefour/transformer)
 
 Transform raw input data into consistent, immutable data transfer objects.
 
