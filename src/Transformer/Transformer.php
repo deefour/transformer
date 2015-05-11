@@ -104,7 +104,7 @@ class Transformer implements JsonSerializable, ArrayAccess {
    * @return boolean
    */
   public function exists($attribute) {
-    return array_key_exists($attribute, $this->source);
+    return isset($this->source[$attribute]);
   }
 
   /**
