@@ -18,12 +18,12 @@ class Transformer implements JsonSerializable, ArrayAccess {
    *
    * @var array
    */
-  protected $casts = [];
+  protected $casts = [ ];
 
   /**
    * Constructor.
    *
-   * @param  array  $input
+   * @param  array $input
    */
   public function __construct(array $input) {
     $this->source = $input;
@@ -32,7 +32,8 @@ class Transformer implements JsonSerializable, ArrayAccess {
   /**
    * Retrieve a single transformed attribute.
    *
-   * @param  string  $attribute
+   * @param  string $attribute
+   *
    * @return mixed
    */
   public function get($attribute) {
@@ -60,11 +61,12 @@ class Transformer implements JsonSerializable, ArrayAccess {
   /**
    * The raw attribute value.
    *
-   * @param  string  $attribute
+   * @param  string $attribute
+   *
    * @return mixed
    */
   public function raw($attribute) {
-    return $this->exists($attribute) ? $this->source[$attribute] : null;
+    return $this->exists($attribute) ? $this->source[ $attribute ] : null;
   }
 
   /**
@@ -73,10 +75,10 @@ class Transformer implements JsonSerializable, ArrayAccess {
    * @return  array
    */
   public function all() {
-    $transformation = [];
+    $transformation = [ ];
 
     foreach (array_keys($this->source) as $attribute) {
-      $transformation[$attribute] = $this->get($attribute);
+      $transformation[ $attribute ] = $this->get($attribute);
     }
 
     return $transformation;
@@ -98,9 +100,11 @@ class Transformer implements JsonSerializable, ArrayAccess {
   }
 
   /**
-   * Boolean check whether the attribute exists on the source data, even if it's null
+   * Boolean check whether the attribute exists on the source data, even if
+   * it's null
    *
-   * @param  string  $attribute
+   * @param  string $attribute
+   *
    * @return boolean
    */
   public function exists($attribute) {
@@ -186,7 +190,8 @@ class Transformer implements JsonSerializable, ArrayAccess {
   /**
    * Determine whether an attribute should be casted to a native type.
    *
-   * @param  string  $attribute
+   * @param  string $attribute
+   *
    * @return bool
    */
   protected function hasCast($attribute) {
@@ -198,11 +203,12 @@ class Transformer implements JsonSerializable, ArrayAccess {
    *
    * Pulled from Laravel's Illuminate\Database\Eloquent\Model::getCastType
    *
-   * @param  string  $key
+   * @param  string $key
+   *
    * @return string
    */
   protected function getCastType($key) {
-    return trim(strtolower($this->casts[$key]));
+    return trim(strtolower($this->casts[ $key ]));
   }
 
   /**
@@ -210,7 +216,8 @@ class Transformer implements JsonSerializable, ArrayAccess {
    *
    * Pulled from Laravel's Illuminate\Database\Eloquent\Model::castAttribute
    *
-   * @param  mixed   $attribute
+   * @param  mixed $attribute
+   *
    * @return mixed
    */
   protected function cast($attribute) {
@@ -223,16 +230,16 @@ class Transformer implements JsonSerializable, ArrayAccess {
     switch ($this->getCastType($attribute)) {
       case 'int':
       case 'integer':
-        return (int) $value;
+        return (int)$value;
       case 'real':
       case 'float':
       case 'double':
-        return (float) $value;
+        return (float)$value;
       case 'string':
-        return (string) $value;
+        return (string)$value;
       case 'bool':
       case 'boolean':
-        return (bool) $value;
+        return (bool)$value;
       case 'object':
         return json_decode($value);
       case 'array':
@@ -249,7 +256,7 @@ class Transformer implements JsonSerializable, ArrayAccess {
    * @return string
    */
   protected function transformerMethod($attribute) {
-    return lcfirst(str_replace(' ', '', ucwords(str_replace(array('-', '_'), ' ', $attribute))));
+    return lcfirst(str_replace(' ', '', ucwords(str_replace([ '-', '_' ], ' ', $attribute))));
   }
 
 }

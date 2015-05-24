@@ -24,7 +24,7 @@ class CastTransformerSpec extends ObjectBehavior {
     $this->all()->shouldReturn([
       'foo'  => 1234,
       'bar'  => null,
-      'buzz' => '1.2'
+      'buzz' => '1.2',
     ]);
   }
 

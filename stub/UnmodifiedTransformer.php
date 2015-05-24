@@ -2,4 +2,5 @@
 
 use Deefour\Transformer\Transformer;
 
-class UnmodifiedTransformer extends Transformer { }
+class UnmodifiedTransformer extends Transformer {
+}

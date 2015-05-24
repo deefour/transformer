@@ -17,7 +17,7 @@ class MutableTransformer extends Transformer {
    * @return mixed
    */
   public function offsetUnset($offset) {
-    unset($this->source[$offset]);
+    unset($this->source[ $offset ]);
   }
 
   /**
@@ -25,7 +25,7 @@ class MutableTransformer extends Transformer {
    *
    * Magic setter.
    *
-   * @param  string  $attribute
+   * @param  string $attribute
    * @param  mixed  $value
    */
   public function __set($attribute, $value) {
@@ -35,11 +35,11 @@ class MutableTransformer extends Transformer {
   /**
    * Set an attribute on the source data.
    *
-   * @param  string  $attribute
+   * @param  string $attribute
    * @param  mixed  $value
    */
   public function set($attribute, $value) {
-    $this->source[$attribute] = $value;
+    $this->source[ $attribute ] = $value;
   }
 
 }

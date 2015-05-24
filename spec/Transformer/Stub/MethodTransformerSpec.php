@@ -22,7 +22,7 @@ class MethodTransformerSpec extends ObjectBehavior {
     $this->all()->shouldReturn([
       'foo'     => 'SOME TEXT',
       'bar_baz' => 'Jason',
-      'bing'    => 123
+      'bing'    => 123,
     ]);
   }
 
@@ -30,8 +30,8 @@ class MethodTransformerSpec extends ObjectBehavior {
     $this->only('foo', 'bing')->shouldEqual([ 'foo' => 'SOME TEXT', 'bing' => 123 ]);
     $this->only([ 'foo', 'bing' ])->shouldEqual([ 'foo' => 'SOME TEXT', 'bing' => 123 ]);
 
-    $this->only('poo')->shouldEqual([]);
-    $this->only()->shouldEqual([]);
+    $this->only('poo')->shouldEqual([ ]);
+    $this->only()->shouldEqual([ ]);
   }
 
 }
