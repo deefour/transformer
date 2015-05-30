@@ -143,7 +143,7 @@ Instantiation and data accecss are otherwise identical to the base transformer.
 
 ## Changelog
 
-#### 0.2.2 - 
+#### 0.2.2 -
 
  - `raw()` will now return the complete, non-transformed source if no `$attribute` is specified.
  - `MutableTransformer` can now be instantiated without any arguments passed to the constructor.
