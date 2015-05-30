@@ -5,10 +5,10 @@ class MutableTransformer extends Transformer {
   /**
    * Constructor.
    *
-   * @param  array $input [optional]
+   * @param  array $source [optional]
    */
-  public function __construct(array $input = []) {
-    parent::__construct($input);
+  public function __construct(array $attributes = []) {
+    parent::__construct($attributes);
   }
 
   /**
@@ -26,7 +26,7 @@ class MutableTransformer extends Transformer {
    * @return mixed
    */
   public function offsetUnset($offset) {
-    unset($this->source[ $offset ]);
+    unset($this->attributes[ $offset ]);
   }
 
   /**
@@ -48,7 +48,7 @@ class MutableTransformer extends Transformer {
    * @param  mixed  $value
    */
   public function set($attribute, $value) {
-    $this->source[ $attribute ] = $value;
+    $this->attributes[ $attribute ] = $value;
   }
 
 }

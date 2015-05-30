@@ -10,7 +10,7 @@ class Transformer implements JsonSerializable, ArrayAccess {
    *
    * @var array
    */
-  protected $source;
+  protected $attributes;
 
   /**
    * Array of casts to be performed. Keys are attribute names, values are
@@ -23,10 +23,10 @@ class Transformer implements JsonSerializable, ArrayAccess {
   /**
    * Constructor.
    *
-   * @param  array $input
+   * @param  array $attributes
    */
-  public function __construct(array $input) {
-    $this->source = $input;
+  public function __construct(array $attributes) {
+    $this->attributes = $attributes;
   }
 
   /**
@@ -68,10 +68,10 @@ class Transformer implements JsonSerializable, ArrayAccess {
    */
   public function raw($attribute = null) {
     if (is_null($attribute)) {
-      return $this->source;
+      return $this->attributes;
     }
 
-    return $this->exists($attribute) ? $this->source[ $attribute ] : null;
+    return $this->exists($attribute) ? $this->attributes[ $attribute ] : null;
   }
 
   /**
@@ -82,7 +82,7 @@ class Transformer implements JsonSerializable, ArrayAccess {
   public function all() {
     $transformation = [ ];
 
-    foreach (array_keys($this->source) as $attribute) {
+    foreach (array_keys($this->attributes) as $attribute) {
       $transformation[ $attribute ] = $this->get($attribute);
     }
 
@@ -129,7 +129,7 @@ class Transformer implements JsonSerializable, ArrayAccess {
    * @return boolean
    */
   public function exists($attribute) {
-    return array_key_exists($attribute, $this->source);
+    return array_key_exists($attribute, $this->attributes);
   }
 
   /**
@@ -275,34 +275,34 @@ class Transformer implements JsonSerializable, ArrayAccess {
    * Adds a specific attribute to the response object.
    *
    * @param  array  $response
-   * @param  mixed  $source
+   * @param  mixed  $attributes
    * @param  string $attribute
    *
    * @return void
    */
-  private function addPermittedValue(array &$response, $source, $attribute) {
-    if ( ! isset($source[ $attribute ])) {
+  private function addPermittedValue(array &$response, $attributes, $attribute) {
+    if ( ! isset($attributes[ $attribute ])) {
       return;
     }
 
-    $response[ $attribute ] = $source[ $attribute ];
+    $response[ $attribute ] = $attributes[ $attribute ];
   }
 
   /**
    * Adds an arbitrary collection to the response object, by key.
    *
    * @param  array  $response
-   * @param  mixed  $source
+   * @param  mixed  $attributes
    * @param  string $attribute
    *
    * @return void
    */
-  private function addPermittedCollection(array &$response, $source, $attribute) {
-    if ( ! isset($source[ $attribute ]) or ! is_array($source[ $attribute ])) {
+  private function addPermittedCollection(array &$response, $attributes, $attribute) {
+    if ( ! isset($attributes[ $attribute ]) or ! is_array($attributes[ $attribute ])) {
       return;
     }
 
-    $response[ $attribute ] = $source[ $attribute ];
+    $response[ $attribute ] = $attributes[ $attribute ];
   }
 
   /**
