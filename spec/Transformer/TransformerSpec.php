@@ -1,15 +1,15 @@
-<?php namespace spec\Deefour\Transformer\Stub;
+<?php namespace spec\Deefour\Transformer;
 
-use Deefour\Transformer\Stub\UnmodifiedTransformer;
+use Deefour\Transformer\Transformer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class UnmodifiedTransformerSpec extends ObjectBehavior {
+class TransformerSpec extends ObjectBehavior {
 
   protected $source = [ 'foo' => '1234', 'bar' => null ];
 
   function let() {
-    $this->beAnInstanceOf(UnmodifiedTransformer::class);
+    $this->beAnInstanceOf(Transformer::class);
     $this->beConstructedWith($this->source);
   }
 

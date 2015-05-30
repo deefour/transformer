@@ -3,6 +3,15 @@
 class MutableTransformer extends Transformer {
 
   /**
+   * Constructor.
+   *
+   * @param  array $input [optional]
+   */
+  public function __construct(array $input = []) {
+    parent::__construct($input);
+  }
+
+  /**
    * ArrayAccess to set an attribute on the source data.
    *
    * @return void

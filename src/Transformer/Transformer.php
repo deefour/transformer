@@ -59,13 +59,18 @@ class Transformer implements JsonSerializable, ArrayAccess {
   }
 
   /**
-   * The raw attribute value.
+   * The raw attribute value. If no attribute is provided, the raw source is
+   * returned (no transformation is performed).
    *
-   * @param  string $attribute
+   * @param  string $attribute [optional]
    *
    * @return mixed
    */
-  public function raw($attribute) {
+  public function raw($attribute = null) {
+    if (is_null($attribute)) {
+      return $this->source;
+    }
+
     return $this->exists($attribute) ? $this->source[ $attribute ] : null;
   }
 
@@ -85,18 +90,34 @@ class Transformer implements JsonSerializable, ArrayAccess {
   }
 
   /**
-   * Pluck a select few attributes from the transformation.
+   * Retrieve a specific subset of the attributes from the transformation. This
+   * is smart enough to understand nested sets of attributes.
    *
    * @return array
    */
   public function only() {
-    $attributes = (array)func_get_args();
+    $whitelist = (array)func_get_args();
 
-    if ( ! empty($attributes) && is_array($attributes[0])) {
-      $attributes = $attributes[0];
+    if ( ! empty($whitelist) && is_array($whitelist[0])) {
+      $whitelist = $whitelist[0];
     }
 
-    return array_intersect_key($this->all(), array_flip($attributes));
+    $attributes = $this->toArray();
+    $response   = [ ];
+
+    foreach ($whitelist as $key => $value) {
+      if (is_string($value)) { // scalar value
+        $this->addPermittedValue($response, $attributes, $value);
+      } elseif ( ! is_array($value)) { // invalid structure; move on
+        continue;
+      } elseif (empty($value)) { // arbitrary array/collection
+        $this->addPermittedCollection($response, $attributes, $key);
+      } else { // recursion
+        $response[ $key ] = $this->permit($whitelist[ $key ], $attributes[ $key ]);
+      }
+    }
+
+    return $response;
   }
 
   /**
@@ -248,6 +269,40 @@ class Transformer implements JsonSerializable, ArrayAccess {
       default:
         return $value;
     }
+  }
+
+  /**
+   * Adds a specific attribute to the response object.
+   *
+   * @param  array  $response
+   * @param  mixed  $source
+   * @param  string $attribute
+   *
+   * @return void
+   */
+  private function addPermittedValue(array &$response, $source, $attribute) {
+    if ( ! isset($source[ $attribute ])) {
+      return;
+    }
+
+    $response[ $attribute ] = $source[ $attribute ];
+  }
+
+  /**
+   * Adds an arbitrary collection to the response object, by key.
+   *
+   * @param  array  $response
+   * @param  mixed  $source
+   * @param  string $attribute
+   *
+   * @return void
+   */
+  private function addPermittedCollection(array &$response, $source, $attribute) {
+    if ( ! isset($source[ $attribute ]) or ! is_array($source[ $attribute ])) {
+      return;
+    }
+
+    $response[ $attribute ] = $source[ $attribute ];
   }
 
   /**

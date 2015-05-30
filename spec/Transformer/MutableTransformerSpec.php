@@ -1,6 +1,6 @@
-<?php namespace spec\Deefour\Transformer\Stub;
+<?php namespace spec\Deefour\Transformer;
 
-use Deefour\Transformer\Stub\MutableTransformer;
+use Deefour\Transformer\MutableTransformer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -10,16 +10,26 @@ class MutableTransformerSpec extends ObjectBehavior {
 
   function let() {
     $this->beAnInstanceOf(MutableTransformer::class);
-    $this->beConstructedWith($this->source);
   }
 
-  function it_hits_raw_method_on_toArray_by_default() {
+  function it_allows_instantiation_without_constructor_args() {
+    $this->toArray()->shouldBeLike([]);
+  }
+
+  function it_allows_mutation_of_underlying_source() {
+    $this->beConstructedWith($this->source);
+
     $this->get('foo')->shouldReturn('some text');
     $this->get('bar')->shouldBeNull();
     $this->set('bar', 'baz');
     $this->get('bar')->shouldReturn('baz');
     $this->offsetUnset('foo');
     $this->get('foo')->shouldBeNull();
+  }
+
+  function it_allows_mutation_via_magic_setter() {
+    $this->baz = 'test';
+    $this->get('baz')->shouldReturn('test');
   }
 
 }
