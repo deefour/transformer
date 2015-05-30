@@ -21,7 +21,7 @@
   "minimum-stability": "dev",
   "autoload": {
     "psr-4": {
-      "Deefour\\": "src"
+      "Deefour\\Transformer\\": "src"
     }
   },
   "autoload-dev": {
