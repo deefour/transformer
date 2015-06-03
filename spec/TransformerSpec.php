@@ -76,6 +76,7 @@ class TransformerSpec extends ObjectBehavior {
     $this->only('foo')->shouldReturn([ 'foo' => '1234' ]);
     $this->only('foo', 'bar')->shouldReturn([ 'foo' => '1234', 'bar' => null ]);
   }
+
   function it_rejects_unknown_attributes_during_pluck() {
     $this->only('foo', 'INVALID')->shouldReturn([ 'foo' => '1234' ]);
   }
@@ -85,10 +86,20 @@ class TransformerSpec extends ObjectBehavior {
     $this->only([ 'foo', 'bar' ])->shouldReturn([ 'foo' => '1234', 'bar' => null ]);
   }
 
-
   function it_allows_deep_plucking_via_nested_arrays() {
     $this->only('profile')->shouldReturn([ 'profile' => $this->source['profile'] ]);
     $this->only([ 'profile' => [ 'first_name' ] ])->shouldReturn([ 'profile' => [ 'first_name' => 'Jason' ]]);
+  }
+
+  function it_provides_attribute_access_via_magic_call() {
+    $this->callOnWrappedObject('__call', [ 'foo', [] ])->shouldReturn('1234');
+    $this->callOnWrappedObject('__call', [ 'bar', [] ])->shouldReturn(null);
+    $this->callOnWrappedObject('__call', [ 'baz', [] ])->shouldReturn(null);
+  }
+
+  function it_disallows_attribute_mutation_via_magic_call() {
+    $this->callOnWrappedObject('__call', [ 'foo', [] ])->shouldReturn('1234');
+    $this->callOnWrappedObject('__call', [ 'foo', [ 'abc' ] ])->shouldReturn('1234');
   }
 
 }

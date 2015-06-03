@@ -29,7 +29,15 @@ class MutableTransformerSpec extends ObjectBehavior {
 
   function it_allows_mutation_via_magic_setter() {
     $this->baz = 'test';
+
     $this->get('baz')->shouldReturn('test');
+  }
+
+  function it_provides_attribute_mutation_via_magic_call() {
+    $this->beConstructedWith($this->source);
+
+    $this->callOnWrappedObject('__call', [ 'foo', [] ])->shouldReturn('some text');
+    $this->callOnWrappedObject('__call', [ 'foo', [ 'abc' ] ])->shouldReturn('abc');
   }
 
 }

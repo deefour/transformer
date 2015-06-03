@@ -209,6 +209,17 @@ class Transformer implements JsonSerializable, ArrayAccess {
   }
 
   /**
+   * Accessor via magic call.
+   *
+   * @param  string  $method
+   * @param  array  $parameters
+   * @return mixed
+   */
+  public function __call($method, $parameters) {
+    return $this->get($method);
+  }
+
+  /**
    * Determine whether an attribute should be casted to a native type.
    *
    * @param  string $attribute

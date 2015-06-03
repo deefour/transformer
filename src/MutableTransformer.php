@@ -30,6 +30,16 @@ class MutableTransformer extends Transformer {
   }
 
   /**
+   * Set an attribute on the source data.
+   *
+   * @param  string $attribute
+   * @param  mixed  $value
+   */
+  public function set($attribute, $value) {
+    $this->attributes[ $attribute ] = $value;
+  }
+
+  /**
    * {@inheritdoc}
    *
    * Magic setter.
@@ -42,13 +52,18 @@ class MutableTransformer extends Transformer {
   }
 
   /**
-   * Set an attribute on the source data.
+   * Accessor/mutator via magic call.
    *
-   * @param  string $attribute
-   * @param  mixed  $value
+   * @param  string  $method
+   * @param  array  $parameters
+   * @return mixed
    */
-  public function set($attribute, $value) {
-    $this->attributes[ $attribute ] = $value;
+  public function __call($method, $parameters) {
+    if (count($parameters)) {
+      $this->set($method, $parameters[0]);
+    }
+
+    return $this->get($method);
   }
 
 }
