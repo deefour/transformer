@@ -6,12 +6,22 @@ use Prophecy\Argument;
 
 class TransformerSpec extends ObjectBehavior {
 
-  protected $source = [ 'foo' => '1234', 'bar' => null ];
+  protected $source = [
+    'foo' => '1234',
+    'bar' => null,
+    'profile' => [
+      'first_name' => 'Jason',
+      'last_name'  => 'Daly',
+      'state'      => 'CT',
+      'country'    => 'USA',
+    ],
+  ];
 
   function let() {
     $this->beAnInstanceOf(Transformer::class);
     $this->beConstructedWith($this->source);
   }
+
 
   function it_returns_unmofified_attribute_values() {
     $this->get('foo')->shouldReturn('1234');
@@ -60,6 +70,25 @@ class TransformerSpec extends ObjectBehavior {
   function it_responds_to_magic_property_access() {
     $this->foo->shouldEqual('1234');
     $this->baz->shouldEqual(null);
+  }
+
+  function it_allows_attributes_to_be_plucked() {
+    $this->only('foo')->shouldReturn([ 'foo' => '1234' ]);
+    $this->only('foo', 'bar')->shouldReturn([ 'foo' => '1234', 'bar' => null ]);
+  }
+  function it_rejects_unknown_attributes_during_pluck() {
+    $this->only('foo', 'INVALID')->shouldReturn([ 'foo' => '1234' ]);
+  }
+
+  function it_allows_plucking_via_array_of_keys() {
+    $this->only([ 'foo' ])->shouldReturn([ 'foo' => '1234' ]);
+    $this->only([ 'foo', 'bar' ])->shouldReturn([ 'foo' => '1234', 'bar' => null ]);
+  }
+
+
+  function it_allows_deep_plucking_via_nested_arrays() {
+    $this->only('profile')->shouldReturn([ 'profile' => $this->source['profile'] ]);
+    $this->only([ 'profile' => [ 'first_name' ] ])->shouldReturn([ 'profile' => [ 'first_name' => 'Jason' ]]);
   }
 
 }

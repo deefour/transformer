@@ -113,7 +113,7 @@ class Transformer implements JsonSerializable, ArrayAccess {
       } elseif (empty($value)) { // arbitrary array/collection
         $this->addPermittedCollection($response, $attributes, $key);
       } else { // recursion
-        $response[ $key ] = $this->only($whitelist[ $key ], $attributes[ $key ]);
+        $response[ $key ] = (new static($attributes[$key]))->only($whitelist[ $key ]);
       }
     }
 
@@ -281,7 +281,7 @@ class Transformer implements JsonSerializable, ArrayAccess {
    * @return void
    */
   private function addPermittedValue(array &$response, $attributes, $attribute) {
-    if ( ! isset($attributes[ $attribute ])) {
+    if ( ! $this->offsetExists($attribute)) {
       return;
     }
 
