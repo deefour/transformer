@@ -102,4 +102,16 @@ class TransformerSpec extends ObjectBehavior {
     $this->callOnWrappedObject('__call', [ 'foo', [ 'abc' ] ])->shouldReturn('1234');
   }
 
+  function it_returns_expected_value_for_known_attribute_when_default_exists() {
+    $this->get('foo', 'default')->shouldReturn('1234');
+  }
+
+  function it_returns_default_on_get_for_unknown_attribute() {
+    $this->get('invalid', 'default')->shouldReturn('default');
+  }
+
+  function it_returns_evaluated_default_for_unknown_attribute() {
+    $this->get('invalid', function() { return true; })->shouldReturn(true);
+  }
+
 }

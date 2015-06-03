@@ -134,6 +134,13 @@ $transform->raw('title'); //=> 'a whole new world'
 $transform->raw(); //=>  [ 'title' => 'a whole new world', 'price' => '29.95', 'publication_date' => '2010-12-09', 'author' => 'Jason Daly' ]
 ```
 
+A default value can be provided to `get()` as a second parameter. If the default is a callable, it will be evaluated before returning.
+
+```php
+$transformer->get('invalid-attribute', 'Not Available'); //=> 'Not Available'
+$transformer->get('invalid-attribte', function() { return 'Oops!'; }); //=> 'Oops!'
+```
+
 ## Mutable Transformers
 
 In the base transformer, `__set()`, `offsetSet`, and `offsetUnset` are all null methods. This (lack of) behavior keeps the underlying source data immutable.
@@ -159,7 +166,12 @@ Instantiation and data access are otherwise identical to the base transformer.
 
 ## Changelog
 
-#### 0.2.4 - May 30, 2015
+#### 0.2.5 - June 3, 2015
+
+ - New `__call()` functionality providing magic method access to attributes.
+ - `get()` now handles default values, including closures.
+
+#### 0.2.4 - June 2, 2015
 
  - Fixed bugs in the `only()` method related to nested attributes.
 

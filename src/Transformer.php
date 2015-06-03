@@ -1,6 +1,7 @@
 <?php namespace Deefour\Transformer;
 
 use ArrayAccess;
+use Closure;
 use JsonSerializable;
 
 class Transformer implements JsonSerializable, ArrayAccess {
@@ -33,12 +34,13 @@ class Transformer implements JsonSerializable, ArrayAccess {
    * Retrieve a single transformed attribute.
    *
    * @param  string $attribute
+   * @param  mixed  $default
    *
    * @return mixed
    */
-  public function get($attribute) {
+  public function get($attribute, $default = null) {
     if ( ! $this->exists($attribute)) {
-      return null;
+      return ($default instanceof Closure) ? $default() : $default;
     }
 
     // If a method transformation exists for the attribute, bypass the default
