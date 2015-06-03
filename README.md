@@ -89,6 +89,12 @@ A magic `__get()` implementation provides property access to the transformed att
 $transform->title;
 ```
 
+A magic `__call()` implementation provides method access
+
+```php
+$transformer->title();
+```
+
 The existince of a property can be checked through `__isset()` or the api
 
 ```php
@@ -121,7 +127,7 @@ The `JsonSerializable` interface is also implemented.
 json_encode($transform); //=> "{'title':'A Whole New World', 'price':29.95, 'publication_date':'2010-12-09 00:00:00', 'author':'Jason Daly'}"
 ```
 
-Finally, individual raw attributes or the entire raw source can be retrieved.
+Individual raw attributes or the entire raw source can be retrieved.
 
 ```php
 $transform->raw('title'); //=> 'a whole new world'
@@ -134,7 +140,17 @@ In the base transformer, `__set()`, `offsetSet`, and `offsetUnset` are all null 
 
 A `MutableTransformer` class exists which does implement these methods, allowing additional properties to be added to, or existing properties to be modified on the transformer instance.
 
-Instantiation and data accecss are otherwise identical to the base transformer.
+The `__call()` method can also be used to set/modify attributes on the transformer.
+
+```php
+new MutableTransformer([ 'foo' => '1234' ]);
+
+$transformer->foo('abcd');
+
+$transformer->get('foo'); //=> 'abcd'
+```
+
+Instantiation and data access are otherwise identical to the base transformer.
 
 ## Contribute
 
