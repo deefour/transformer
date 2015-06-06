@@ -11,7 +11,7 @@ Transform raw input data into consistent, immutable data transfer objects.
 Add Tranformer to your `composer.json` file and run `composer update`. See [Packagist](https://packagist.org/packages/deefour/transformer) for specific versions.
 
 ```
-"deefour/transformer": "~0.2.5"
+"deefour/transformer": "~0.2.6"
 ```
 
 **`>=PHP5.5.0` is required.**
@@ -165,6 +165,10 @@ Instantiation and data access are otherwise identical to the base transformer.
 - Source Code: https://github.com/deefour/transformer
 
 ## Changelog
+
+#### 0.2.6 - June 5, 2015
+
+ - Now following PSR-2.
 
 #### 0.2.5 - June 3, 2015
 
