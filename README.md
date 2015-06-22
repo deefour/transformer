@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/deefour/transformer.svg)](https://travis-ci.org/deefour/transformer)
 [![Packagist Version](http://img.shields.io/packagist/v/deefour/transformer.svg)](https://packagist.org/packages/deefour/transformer)
 [![Code Climate](https://codeclimate.com/github/deefour/transformer/badges/gpa.svg)](https://codeclimate.com/github/deefour/transformer)
+[![License](https://poser.pugx.org/deefour/transformer/license.svg)](https://packagist.org/packages/deefour/transformer)
 
 Transform raw input data into consistent, immutable data transfer objects.
 
@@ -33,10 +34,10 @@ Let's say the following input data is submitted via a `POST` request to create a
 
 ```php
 $input = [
-  'title'            => 'a whole new world',
-  'price'            => '29.95',
-  'publication_date' => '2010-12-09',
-  'author'           => 'Jason Daly',
+    'title'            => 'a whole new world',
+    'price'            => '29.95',
+    'publication_date' => '2010-12-09',
+    'author'           => 'Jason Daly',
 ];
 ```
 
@@ -46,20 +47,21 @@ Let's also say that we want to be sure the title of the book has been properly t
 use Deefour\Transformer\Transformer;
 use Carbon\Carbon;
 
-class BookTransformer extends Transformer {
+class BookTransformer extends Transformer
+{
+    protected $casts [
+        'price' => 'float',
+    ];
 
-  protected $casts [
-    'price' => 'float',
-  ];
+    protected function title()
+    {
+        return trim(ucwords($this->raw('title')));
+    }
 
-  protected function title() {
-    return trim(ucwords($this->raw('title')));
-  }
-
-  protected function publicationDate() {
-    return Carbon::parse($this->raw('publication_date'));
-  }
-
+    protected function publicationDate()
+    {
+        return Carbon::parse($this->raw('publication_date'));
+    }
 }
 ```
 
