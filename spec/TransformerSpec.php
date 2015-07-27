@@ -16,6 +16,10 @@ class TransformerSpec extends ObjectBehavior
         'state'      => 'CT',
         'country'    => 'USA',
       ],
+      'zap' => [
+        'bop' => true,
+        'pob' => false
+      ]
     ];
 
     public function let()
@@ -87,11 +91,19 @@ class TransformerSpec extends ObjectBehavior
     {
         $this->only('foo')->shouldReturn(['foo' => '1234']);
         $this->only('foo', 'bar')->shouldReturn(['foo' => '1234', 'bar' => null]);
+        $this->only([ 'zap' => [ 'bop' ] ])->shouldReturn([ 'zap' => [ 'bop' => true ] ]);
+    }
+
+    public function it_silently_ignores_unknown_properties_during_pluck()
+    {
+        $this->only('foo')->shouldReturn(['foo' => '1234']);
+        $this->only('foo', 'bar')->shouldReturn(['foo' => '1234', 'bar' => null]);
     }
 
     public function it_rejects_unknown_attributes_during_pluck()
     {
-        $this->only('foo', 'INVALID')->shouldReturn(['foo' => '1234']);
+        $this->only('foo', 'oops')->shouldReturn(['foo' => '1234']);
+        $this->only('foo', [ 'baz' => [ 'oops' ] ])->shouldReturn(['foo' => '1234']);
     }
 
     public function it_allows_plucking_via_array_of_keys()

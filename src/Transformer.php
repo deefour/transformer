@@ -105,11 +105,9 @@ class Transformer implements JsonSerializable, ArrayAccess
      */
     public function only()
     {
-        $whitelist = (array) func_get_args();
-
-        if (!empty($whitelist) && is_array($whitelist[0])) {
-            $whitelist = $whitelist[0];
-        }
+        $whitelist = array_reduce((array)func_get_args(), function($carry, $item) {
+          return array_merge($carry, (array)$item);
+        }, []) ;
 
         $attributes = $this->toArray();
         $response   = [];
@@ -121,7 +119,7 @@ class Transformer implements JsonSerializable, ArrayAccess
                 continue;
             } elseif (empty($value)) { // arbitrary array/collection
                 $this->addPermittedCollection($response, $attributes, $key);
-            } else { // recursion
+            } elseif (array_key_exists($key, $attributes)) { // recursion
                 $response[ $key ] = (new static($attributes[$key]))->only($whitelist[ $key ]);
             }
         }
