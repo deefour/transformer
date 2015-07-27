@@ -115,11 +115,21 @@ class Transformer implements JsonSerializable, ArrayAccess
         foreach ($whitelist as $key => $value) {
             if (is_string($value)) { // scalar value
                 $this->addPermittedValue($response, $attributes, $value);
-            } elseif (!is_array($value)) { // invalid structure; move on
+
                 continue;
-            } elseif (empty($value)) { // arbitrary array/collection
+            }
+
+            if (!is_array($value)) { // invalid structure; move on
+                continue;
+            }
+
+            if (empty($value)) { // arbitrary array/collection
                 $this->addPermittedCollection($response, $attributes, $key);
-            } elseif (array_key_exists($key, $attributes)) { // recursion
+
+                continue;
+            }
+
+            if (array_key_exists($key, $attributes)) { // recursion
                 $response[ $key ] = (new static($attributes[$key]))->only($whitelist[ $key ]);
             }
         }
@@ -305,6 +315,7 @@ class Transformer implements JsonSerializable, ArrayAccess
      * @param array  $response
      * @param mixed  $attributes
      * @param string $attribute
+     * @return array
      */
     private function addPermittedValue(array &$response, $attributes, $attribute)
     {
@@ -313,6 +324,8 @@ class Transformer implements JsonSerializable, ArrayAccess
         }
 
         $response[ $attribute ] = $attributes[ $attribute ];
+
+        return $response;
     }
 
     /**
@@ -321,6 +334,7 @@ class Transformer implements JsonSerializable, ArrayAccess
      * @param array  $response
      * @param mixed  $attributes
      * @param string $attribute
+     * @return array
      */
     private function addPermittedCollection(array &$response, $attributes, $attribute)
     {
@@ -329,6 +343,8 @@ class Transformer implements JsonSerializable, ArrayAccess
         }
 
         $response[ $attribute ] = $attributes[ $attribute ];
+
+        return $response;
     }
 
     /**
