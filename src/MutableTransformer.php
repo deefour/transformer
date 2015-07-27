@@ -29,7 +29,7 @@ class MutableTransformer extends Transformer
      */
     public function offsetUnset($offset)
     {
-        unset($this->attributes[ $offset ]);
+        unset($this->attributes[$offset]);
     }
 
     /**
@@ -40,7 +40,7 @@ class MutableTransformer extends Transformer
      */
     public function set($attribute, $value)
     {
-        $this->attributes[ $attribute ] = $value;
+        $this->attributes[$attribute] = $value;
     }
 
     /**

@@ -78,7 +78,7 @@ class Transformer implements JsonSerializable, ArrayAccess
             return $this->attributes;
         }
 
-        return $this->exists($attribute) ? $this->attributes[ $attribute ] : null;
+        return $this->exists($attribute) ? $this->attributes[$attribute] : null;
     }
 
     /**
@@ -91,7 +91,7 @@ class Transformer implements JsonSerializable, ArrayAccess
         $transformation = [];
 
         foreach (array_keys($this->attributes) as $attribute) {
-            $transformation[ $attribute ] = $this->get($attribute);
+            $transformation[$attribute] = $this->get($attribute);
         }
 
         return $transformation;
@@ -106,7 +106,7 @@ class Transformer implements JsonSerializable, ArrayAccess
     public function only()
     {
         $whitelist = array_reduce((array)func_get_args(), function($carry, $item) {
-          return array_merge($carry, (array)$item);
+            return array_merge($carry, (array)$item);
         }, []) ;
 
         $attributes = $this->toArray();
@@ -130,7 +130,7 @@ class Transformer implements JsonSerializable, ArrayAccess
             }
 
             if (array_key_exists($key, $attributes)) { // recursion
-                $response[ $key ] = (new static($attributes[$key]))->only($whitelist[ $key ]);
+                $response[$key] = (new static($attributes[$key]))->only($whitelist[$key]);
             }
         }
 
@@ -266,7 +266,7 @@ class Transformer implements JsonSerializable, ArrayAccess
      */
     protected function getCastType($key)
     {
-        return trim(strtolower($this->casts[ $key ]));
+        return trim(strtolower($this->casts[$key]));
     }
 
     /**
@@ -323,7 +323,7 @@ class Transformer implements JsonSerializable, ArrayAccess
             return;
         }
 
-        $response[ $attribute ] = $attributes[ $attribute ];
+        $response[$attribute] = $attributes[$attribute];
 
         return $response;
     }
@@ -338,11 +338,11 @@ class Transformer implements JsonSerializable, ArrayAccess
      */
     private function addPermittedCollection(array &$response, $attributes, $attribute)
     {
-        if (!isset($attributes[ $attribute ]) or !is_array($attributes[ $attribute ])) {
+        if (!isset($attributes[$attribute]) or !is_array($attributes[$attribute])) {
             return;
         }
 
-        $response[ $attribute ] = $attributes[ $attribute ];
+        $response[$attribute] = $attributes[$attribute];
 
         return $response;
     }
