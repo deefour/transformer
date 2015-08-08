@@ -26,9 +26,9 @@ class Transformer implements JsonSerializable, ArrayAccess
     /**
      * Constructor.
      *
-     * @param array $attributes
+     * @param array $attributes [optional]
      */
-    public function __construct(array $attributes)
+    public function __construct(array $attributes = [])
     {
         $this->attributes = $attributes;
     }
