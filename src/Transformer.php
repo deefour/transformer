@@ -105,7 +105,7 @@ class Transformer implements JsonSerializable, ArrayAccess
      */
     public function only()
     {
-        $whitelist = array_reduce((array)func_get_args(), function($carry, $item) {
+        $whitelist = array_reduce((array)func_get_args(), function ($carry, $item) {
             return array_merge($carry, (array)$item);
         }, []) ;
 
