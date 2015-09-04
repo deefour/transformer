@@ -161,12 +161,35 @@ $transformer->get('foo'); //=> 'abcd'
 
 Instantiation and data access are otherwise identical to the base transformer.
 
+### Tracking Changes
+
+When an attribute is modified on a mutable transformer, it's original value is maintained. The transformer can be queried to determine if an attribute has been modified after construction or to retrieve a list of changes.
+
+```php
+$transformer = new MutableTransformer([ 'foo' => 'AAA', 'bar' => 'BBB' ]);
+
+$transformer->isDirty(); //=> false
+
+$transformer->foo = 'new value';
+
+$transformer->isDirty(); //=> true
+$transformer->dirty(); //=> [ 'foo' ]
+$transformer->get('foo'); //=> 'new value'
+$transformer->original('foo'); //=> 'AAA'
+
+$transformer->changed(); //=> [ 'foo' => 'new value' ]
+```
+
 ## Contribute
 
 - Issue Tracker: https://github.com/deefour/transformer/issues
 - Source Code: https://github.com/deefour/transformer
 
 ## Changelog
+
+#### 0.3.0 - September 4, 2015
+
+ - New change tracking, inspired by [yammer/model_attribute](https://github.com/yammer/model_attribute)
 
 #### 0.2.6 - June 5, 2015
 

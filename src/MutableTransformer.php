@@ -5,6 +5,13 @@ namespace Deefour\Transformer;
 class MutableTransformer extends Transformer
 {
     /**
+     * A collection of attributes that have been modified.
+     *
+     * @var array
+     */
+    protected $changes = [];
+
+    /**
      * Constructor.
      *
      * @param array $source [optional]
@@ -40,7 +47,72 @@ class MutableTransformer extends Transformer
      */
     public function set($attribute, $value)
     {
+        $original = $this->original($attribute);
+
+        if ($original === $value) {
+            unset($this->changes[$attribute]);
+        } else {
+            $this->changes[$attribute] = [$original, $value];
+        }
+
         $this->attributes[$attribute] = $value;
+    }
+
+    /**
+     * Fetch a list of dirty attributes.
+     *
+     * @return mixed
+     */
+    public function dirty()
+    {
+        return array_keys($this->changes);
+    }
+
+    /**
+     * Boolean check if an attribute is dirty. If no attribute is passed, a check
+     * will be made to see if _any_ attribute on the transformer is dirty.
+     *
+     * @param string $attribute
+     * @return boolean
+     */
+    public function isDirty($attribute = null)
+    {
+        if (is_null($attribute)) {
+            return ! empty($this->changes);
+        }
+
+        return array_key_exists($attribute, $this->changes);
+    }
+
+    /**
+     * Fetch the original value of the attribute. If no attribute is specified,
+     * return a merge of the originals from the changeset with untouched attributes.
+     *
+     * @param  string $attribute [optional]
+     * @return mixed
+     */
+    public function original($attribute = null)
+    {
+        if (! $this->isDirty($attribute)) {
+            return $this->raw($attribute);
+        }
+
+        return $this->changes[$attribute][0];
+    }
+
+    /**
+     * Output key/value mapping of only the changed attributes.
+     *
+     * @return array
+     */
+    public function changed()
+    {
+        $attributes = array_keys($this->changes);
+        $values     = array_map(function ($change) {
+            return $change[1];
+        }, $this->changes);
+
+        return array_combine($attributes, $values);
     }
 
     /**
