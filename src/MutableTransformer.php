@@ -14,7 +14,7 @@ class MutableTransformer extends Transformer
     /**
      * Constructor.
      *
-     * @param array $source [optional]
+     * @param array $attributes [optional]
      */
     public function __construct(array $attributes = [])
     {
