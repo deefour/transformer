@@ -152,7 +152,7 @@ A `MutableTransformer` class exists which does implement these methods, allowing
 The `__call()` method can also be used to set/modify attributes on the transformer.
 
 ```php
-new MutableTransformer([ 'foo' => '1234' ]);
+$transformer = new MutableTransformer([ 'foo' => '1234' ]);
 
 $transformer->foo('abcd');
 
