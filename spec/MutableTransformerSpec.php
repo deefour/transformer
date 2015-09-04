@@ -96,10 +96,10 @@ class MutableTransformerSpec extends ObjectBehavior
 
         $this->foo = 'bbb';
 
-        $this->changed()->shouldReturn([ 'foo' => 'bbb' ]);
+        $this->changes()->shouldReturn([ 'foo' => 'bbb' ]);
 
         $this->foo = 'aaa';
 
-        $this->changed()->shouldReturn([]);
+        $this->changes()->shouldReturn([]);
     }
 }

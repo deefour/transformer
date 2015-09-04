@@ -105,7 +105,7 @@ class MutableTransformer extends Transformer
      *
      * @return array
      */
-    public function changed()
+    public function changes()
     {
         $attributes = array_keys($this->changes);
         $values     = array_map(function ($change) {

@@ -177,7 +177,7 @@ $transformer->dirty(); //=> [ 'foo' ]
 $transformer->get('foo'); //=> 'new value'
 $transformer->original('foo'); //=> 'AAA'
 
-$transformer->changed(); //=> [ 'foo' => 'new value' ]
+$transformer->changes(); //=> [ 'foo' => 'new value' ]
 ```
 
 ## Contribute
