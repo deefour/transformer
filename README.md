@@ -9,10 +9,10 @@ Transform raw input data into consistent, immutable data transfer objects.
 
 ## Getting Started
 
-Add Tranformer to your `composer.json` file and run `composer update`. See [Packagist](https://packagist.org/packages/deefour/transformer) for specific versions.
+Run the following to add Transfromer to your project's `composer.json`. See [Packagist](https://packagist.org/packages/deefour/transformer) for specific versions.
 
-```
-"deefour/transformer": "~0.2.6"
+```bash
+composer require deefour/transformer
 ```
 
 **`>=PHP5.5.0` is required.**
