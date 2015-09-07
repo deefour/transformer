@@ -15,4 +15,17 @@ class MethodTransformer extends Transformer
     {
         return ucfirst($this->raw('bar_baz'));
     }
+
+    protected function methodAttribute()
+    {
+        return true;
+    }
+
+    /**
+     * @internal
+     */
+    protected function ignoreMe()
+    {
+      return true;
+    }
 }

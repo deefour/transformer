@@ -21,15 +21,6 @@ class MethodTransformerSpec extends ObjectBehavior
         $this->get('bar_baz')->shouldReturn('Jason');
     }
 
-    public function it_can_return_all_values()
-    {
-        $this->all()->shouldReturn([
-      'foo'     => 'SOME TEXT',
-      'bar_baz' => 'Jason',
-      'bing'    => 123,
-    ]);
-    }
-
     public function it_allows_plucking_groups_of_attributes_at_once()
     {
         $this->only('foo', 'bing')->shouldEqual(['foo' => 'SOME TEXT', 'bing' => 123]);
@@ -37,5 +28,18 @@ class MethodTransformerSpec extends ObjectBehavior
 
         $this->only('poo')->shouldEqual([]);
         $this->only()->shouldEqual([]);
+    }
+
+    public function it_includes_method_only_attributes_in_bulk_output()
+    {
+      $this->get('method_attribute')->shouldBe(true);
+      $this->raw('method_attribute')->shouldBe(null);
+      $this->all()->shouldHaveKey('method_attribute');
+    }
+
+    public function it_ignores_tagged_method_attributes()
+    {
+      $this->get('ignore_me')->shouldBe(null);
+      $this->all()->shouldNotHaveKey('ignore_me');
     }
 }

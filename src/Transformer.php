@@ -2,6 +2,8 @@
 
 namespace Deefour\Transformer;
 
+use ReflectionClass;
+use ReflectionMethod;
 use ArrayAccess;
 use Closure;
 use JsonSerializable;
@@ -43,16 +45,16 @@ class Transformer implements JsonSerializable, ArrayAccess
      */
     public function get($attribute, $default = null)
     {
-        if (!$this->exists($attribute)) {
-            return ($default instanceof Closure) ? $default() : $default;
-        }
-
         // If a method transformation exists for the attribute, bypass the default
         // attribute casting.
-        $transformerMethod = $this->transformerMethod($attribute);
+        $transformerMethod = $this->camelCase($attribute);
 
-        if (method_exists($this, $transformerMethod)) {
+        if (method_exists($this, $transformerMethod) && $this->isAttributeMethod($transformerMethod)) {
             return $this->$transformerMethod();
+        }
+
+        if (!$this->exists($attribute)) {
+            return ($default instanceof Closure) ? $default() : $default;
         }
 
         // Try to cast the attribute value.
@@ -92,6 +94,23 @@ class Transformer implements JsonSerializable, ArrayAccess
 
         foreach (array_keys($this->attributes) as $attribute) {
             $transformation[$attribute] = $this->get($attribute);
+        }
+
+        $reflector = new ReflectionClass($this);
+        $methods   = $reflector->getMethods(ReflectionMethod::IS_PROTECTED);
+        $mapping   = [];
+
+        $methods = array_filter($methods, function ($method) {
+            return $this->isAttributeMethod($method);
+        });
+
+        array_walk($methods, function ($method) use (&$mapping) {
+            $method = (string)$method->getName();
+            $mapping[$this->snakeCase($method)] = $method;
+        }, $methods);
+
+        foreach (array_diff_key($mapping, $transformation) as $attribute => $method) {
+          $transformation[$attribute] = $this->$method();
         }
 
         return $transformation;
@@ -246,6 +265,8 @@ class Transformer implements JsonSerializable, ArrayAccess
     /**
      * Determine whether an attribute should be casted to a native type.
      *
+     * @internal
+     *
      * @param string $attribute
      *
      * @return bool
@@ -260,6 +281,8 @@ class Transformer implements JsonSerializable, ArrayAccess
      *
      * Pulled from Laravel's Illuminate\Database\Eloquent\Model::getCastType
      *
+     * @internal
+     *
      * @param string $key
      *
      * @return string
@@ -273,6 +296,8 @@ class Transformer implements JsonSerializable, ArrayAccess
      * Cast an attribute to a native PHP type.
      *
      * Pulled from Laravel's Illuminate\Database\Eloquent\Model::castAttribute
+     *
+     * @internal
      *
      * @param mixed $attribute
      *
@@ -312,12 +337,14 @@ class Transformer implements JsonSerializable, ArrayAccess
     /**
      * Adds a specific attribute to the response object.
      *
+     * @internal
+     *
      * @param array  $response
      * @param mixed  $attributes
      * @param string $attribute
      * @return array
      */
-    private function addPermittedValue(array &$response, $attributes, $attribute)
+    protected function addPermittedValue(array &$response, $attributes, $attribute)
     {
         if (!$this->offsetExists($attribute)) {
             return;
@@ -331,12 +358,14 @@ class Transformer implements JsonSerializable, ArrayAccess
     /**
      * Adds an arbitrary collection to the response object, by key.
      *
+     * @internal
+     *
      * @param array  $response
      * @param mixed  $attributes
      * @param string $attribute
      * @return array
      */
-    private function addPermittedCollection(array &$response, $attributes, $attribute)
+    protected function addPermittedCollection(array &$response, $attributes, $attribute)
     {
         if (!isset($attributes[$attribute]) or !is_array($attributes[$attribute])) {
             return;
@@ -348,12 +377,45 @@ class Transformer implements JsonSerializable, ArrayAccess
     }
 
     /**
-     * Convert a snake-case attribute name into a camel-case method name.
+     * Convert a camel-case method name into a snake-case attribute name.
+     *
+     * @internal
      *
      * @return string
      */
-    protected function transformerMethod($attribute)
-    {
-        return lcfirst(str_replace(' ', '', ucwords(str_replace(['-', '_'], ' ', $attribute))));
+    protected function snakeCase($value) {
+        if (!ctype_lower($value)) {
+            $value = strtolower(preg_replace('/(.)(?=[A-Z])/', '$1_', $value));
+            $value = preg_replace('/\s+/', '', $value);
+        }
+
+        return $value;
+    }
+
+    /**
+     * Convert a snake-case attribute name into a camel-case method name.
+     *
+     * @internal
+     *
+     * @return string
+     */
+    protected function camelCase($value) {
+        return lcfirst(str_replace(' ', '', ucwords(str_replace(['-', '_'], ' ', $value))));
+    }
+
+    /**
+     * Check to make sure the method does not have the @internal flag in the docblock.
+     *
+     * @internal
+     *
+     * @param  ReflectionMethod|string $method
+     * @return boolean
+     */
+    protected function isAttributeMethod($method) {
+      if (!($method instanceof ReflectionMethod)) {
+        $method = new ReflectionMethod($this, $method);
+      }
+
+      return $method->isProtected() && strpos($method->getDocComment(), '@internal') === false;
     }
 }

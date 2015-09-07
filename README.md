@@ -25,6 +25,7 @@ composer require deefour/transformer
  - A tranformer accepts a single array of data during instantiation.
  - Attributes on the input source can be cast into specific types.
  - A method can be created for each attribute to define a transformation of it's raw value.
+ - Methods can be created to provide additional, custom attributes.
  - The input source on the transformer is immutable.
  - The transformer can be queried to retrieve "transformed" versions of individual attributes from the source data or the entire data set.
 
@@ -76,6 +77,49 @@ $transform->get('title');            //=> 'A Whole New World'
 $transform->get('price');            //=> 29.95 (cast to a float)
 $transform->get('publication_date'); //=> Carbon\Carbon instance
 ```
+
+### Method Attributes
+
+Any `protected` method added to a transformer is treated as an attribute, even if the snake-cased version of the method name is not found in the `$attributes` source on the class. An `@internal` tag can be added to the docblock of any `protected` method that should **not** be treated as an attribute on the transformer.
+
+```php
+class BookTransformer extends Transformer
+{
+    /**
+     * Fetch the cover image URL from a web service.
+     *
+     * @return string
+     */
+    protected function coverImage()
+    {
+        return $this->fetchTheImage()['thumbnail'];
+    }
+
+    /**
+     * Get the raw JSON response from the web service for the image.
+     *
+     * @internal
+     * @return boolean
+     */
+    protected function fetchTheImage()
+    {
+        return true;
+    }
+}
+```
+
+Although a `'cover_image'` attribute is not provided to the transformer during construction, it functions as any other attribute. `fetchTheImage` will be ignored.
+
+```php
+$transform = new BookTransformer([ 'title' => 'A Whole New World' ]);
+
+$transform->get('title');      //=> 'A Whole New World'
+$transform->get('cover_image') //=> 'http://some.cdn.path/to/an/image.png'
+
+$transform->all(); //=> [ 'title' => 'A Whole New World', 'cover_image' => 'http://some.cdn.path/to/an/image.png' ]
+```
+
+
 
 ## Accessing Data
 
@@ -186,6 +230,11 @@ $transformer->changes(); //=> [ 'foo' => 'new value' ]
 - Source Code: https://github.com/deefour/transformer
 
 ## Changelog
+
+#### 0.4.0 - September 7, 2015
+
+ - Support added for "attribute methods" - methods who's snake-cased equivalent name is not present in the `$attributes` source, but who are still treated as any other attribute that *is* present in the `$attributes` source.
+ - `protected` methods that should not be treated as "attribute methods" should now be tagged `@internal` in their docblock.
 
 #### 0.3.0 - September 4, 2015
 
