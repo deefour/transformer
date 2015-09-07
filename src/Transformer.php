@@ -110,7 +110,7 @@ class Transformer implements JsonSerializable, ArrayAccess
         }, $methods);
 
         foreach (array_diff_key($mapping, $transformation) as $attribute => $method) {
-          $transformation[$attribute] = $this->$method();
+            $transformation[$attribute] = $this->$method();
         }
 
         return $transformation;
@@ -383,7 +383,8 @@ class Transformer implements JsonSerializable, ArrayAccess
      *
      * @return string
      */
-    protected function snakeCase($value) {
+    protected function snakeCase($value)
+    {
         if (!ctype_lower($value)) {
             $value = strtolower(preg_replace('/(.)(?=[A-Z])/', '$1_', $value));
             $value = preg_replace('/\s+/', '', $value);
@@ -399,7 +400,8 @@ class Transformer implements JsonSerializable, ArrayAccess
      *
      * @return string
      */
-    protected function camelCase($value) {
+    protected function camelCase($value)
+    {
         return lcfirst(str_replace(' ', '', ucwords(str_replace(['-', '_'], ' ', $value))));
     }
 
@@ -411,11 +413,12 @@ class Transformer implements JsonSerializable, ArrayAccess
      * @param  ReflectionMethod|string $method
      * @return boolean
      */
-    protected function isAttributeMethod($method) {
-      if (!($method instanceof ReflectionMethod)) {
-        $method = new ReflectionMethod($this, $method);
-      }
+    protected function isAttributeMethod($method)
+    {
+        if (!($method instanceof ReflectionMethod)) {
+            $method = new ReflectionMethod($this, $method);
+        }
 
-      return $method->isProtected() && strpos($method->getDocComment(), '@internal') === false;
+        return $method->isProtected() && strpos($method->getDocComment(), '@internal') === false;
     }
 }
