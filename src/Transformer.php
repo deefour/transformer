@@ -45,12 +45,8 @@ class Transformer implements JsonSerializable, ArrayAccess
      */
     public function get($attribute, $default = null)
     {
-        // If a method transformation exists for the attribute, bypass the default
-        // attribute casting.
-        $transformerMethod = $this->camelCase($attribute);
-
-        if (method_exists($this, $transformerMethod) && $this->isAttributeMethod($transformerMethod)) {
-            return $this->$transformerMethod();
+        if ($this->isAttributeMethod($attribute)) {
+            return call_user_func([$this, $this->camelCase($attribute)]);
         }
 
         if (!$this->exists($attribute)) {
@@ -80,7 +76,11 @@ class Transformer implements JsonSerializable, ArrayAccess
             return $this->attributes;
         }
 
-        return $this->exists($attribute) ? $this->attributes[$attribute] : null;
+        if (!array_key_exists($attribute, $this->attributes)) {
+            return null;
+        }
+
+        return $this->attributes[$attribute];
     }
 
     /**
@@ -101,7 +101,10 @@ class Transformer implements JsonSerializable, ArrayAccess
         $mapping   = [];
 
         $methods = array_filter($methods, function ($method) {
-            return $this->isAttributeMethod($method);
+            $attribute = $this->snakeCase((string)$method->getName());
+
+            return $this->isAttributeMethod($attribute)
+                && ! array_key_exists($attribute, $this->attributes);
         });
 
         array_walk($methods, function ($method) use (&$mapping) {
@@ -166,7 +169,8 @@ class Transformer implements JsonSerializable, ArrayAccess
      */
     public function exists($attribute)
     {
-        return array_key_exists($attribute, $this->attributes);
+        return array_key_exists($attribute, $this->attributes)
+            || $this->isAttributeMethod($attribute);
     }
 
     /**
@@ -410,14 +414,18 @@ class Transformer implements JsonSerializable, ArrayAccess
      *
      * @internal
      *
-     * @param  ReflectionMethod|string $method
+     * @param  string $attribute
      * @return boolean
      */
-    protected function isAttributeMethod($method)
+    protected function isAttributeMethod($attribute)
     {
-        if (!($method instanceof ReflectionMethod)) {
-            $method = new ReflectionMethod($this, $method);
+        $method = $this->camelCase($attribute);
+
+        if (!method_exists($this, $method)) {
+            return false;
         }
+
+        $method = new ReflectionMethod($this, $method);
 
         return $method->isProtected() && strpos($method->getDocComment(), '@internal') === false;
     }
