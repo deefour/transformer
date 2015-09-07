@@ -367,7 +367,7 @@ class Transformer implements JsonSerializable, ArrayAccess
      */
     protected function addPermittedCollection(array &$response, $attributes, $attribute)
     {
-        if (!isset($attributes[$attribute]) or !is_array($attributes[$attribute])) {
+        if (!isset($attributes[$attribute]) || !is_array($attributes[$attribute])) {
             return;
         }
 
