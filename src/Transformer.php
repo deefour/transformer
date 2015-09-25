@@ -15,7 +15,7 @@ class Transformer implements JsonSerializable, ArrayAccess
      *
      * @var array
      */
-    protected $attributes;
+    protected $attributes = [];
 
     /**
      * Array of casts to be performed. Keys are attribute names, values are
