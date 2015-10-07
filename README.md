@@ -231,6 +231,10 @@ $transformer->changes(); //=> [ 'foo' => 'new value' ]
 
 ## Changelog
 
+#### 1.0.0 - October 7, 2015
+
+ - Release 1.0.0.
+
 #### 0.4.0 - September 7, 2015
 
  - Support added for "attribute methods" - methods who's snake-cased equivalent name is not present in the `$attributes` source, but who are still treated as any other attribute that *is* present in the `$attributes` source.
