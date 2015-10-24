@@ -429,4 +429,14 @@ class Transformer implements JsonSerializable, ArrayAccess
 
         return $method->isProtected() && strpos($method->getDocComment(), '@internal') === false;
     }
+
+    /**
+     * Magic method for useful debug info.
+     *
+     * @return array
+     */
+    public function __debugInfo()
+    {
+        return $this->all();
+    }
 }
