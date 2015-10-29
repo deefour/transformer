@@ -167,6 +167,10 @@ and a specific set of keys can be plucked all at once.
 $transform->only('title', 'price'); //=> [ 'title' => 'A Whole New World', 'price' => 29.95 ]
 ```
 
+```php
+$transform->except('secret_key'); //=> everything except the 'secret_key' attribute.
+```
+
 The `JsonSerializable` interface is also implemented.
 
 ```php
@@ -230,6 +234,10 @@ $transformer->changes(); //=> [ 'foo' => 'new value' ]
 - Source Code: https://github.com/deefour/transformer
 
 ## Changelog
+
+#### 1.0.1 - October 29, 2015
+
+ - Added `except()` method.
 
 #### 1.0.0 - October 7, 2015
 

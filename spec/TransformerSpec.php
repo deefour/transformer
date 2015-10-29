@@ -118,6 +118,17 @@ class TransformerSpec extends ObjectBehavior
         $this->only(['profile' => ['first_name']])->shouldReturn(['profile' => ['first_name' => 'Jason']]);
     }
 
+    public function it_allows_blacklisted_pluck()
+    {
+        $this->except('foo', 'profile')->shouldReturn([ 'bar' => null, 'zap' => [ 'bop' => true, 'pob' => false ] ]);
+        $this->except(2)->shouldReturn($this->source);
+    }
+
+    public function it_allows_deep_blacklist_plucking_via_nested_arrays()
+    {
+        $this->except('profile', [ 'zap' => [ 'bop' ] ])->shouldReturn([ 'foo' => '1234', 'bar' => null, 'zap' => [ 'pob' => false ] ]);
+    }
+
     public function it_provides_attribute_access_via_magic_call()
     {
         $this->callOnWrappedObject('__call', ['foo', []])->shouldReturn('1234');

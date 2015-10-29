@@ -129,7 +129,7 @@ class Transformer implements JsonSerializable, ArrayAccess
     {
         $whitelist = array_reduce((array)func_get_args(), function ($carry, $item) {
             return array_merge($carry, (array)$item);
-        }, []) ;
+        }, []);
 
         $attributes = $this->toArray();
         $response   = [];
@@ -152,11 +152,41 @@ class Transformer implements JsonSerializable, ArrayAccess
             }
 
             if (array_key_exists($key, $attributes)) { // recursion
-                $response[$key] = (new static($attributes[$key]))->only($whitelist[$key]);
+                $response[$key] = (new static($attributes[$key]))->only($value);
             }
         }
 
         return $response;
+    }
+
+    /**
+     * Retrieve everything _except_ a subset of the attributes from the
+     * transformation. This is smart enough to understand nested sets of attributes.
+     *
+     * @return array
+     */
+    public function except() {
+        $blacklist = array_reduce((array)func_get_args(), function ($carry, $item) {
+            return array_merge($carry, (array)$item);
+        }, []);
+
+        $attributes = $this->toArray();
+
+        foreach ($blacklist as $key => $value) {
+          if (is_string($value)) {
+            unset($attributes[$value]);
+
+            continue;
+          }
+
+          if (is_array($value)) {
+            $attributes[$key] = (new static($attributes[$key]))->except($value);
+
+            continue;
+          }
+        }
+
+        return $attributes;
     }
 
     /**
