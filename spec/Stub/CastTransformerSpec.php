@@ -26,10 +26,10 @@ class CastTransformerSpec extends ObjectBehavior
     public function it_can_return_all_values()
     {
         $this->all()->shouldReturn([
-      'foo'  => 1234,
-      'bar'  => null,
-      'buzz' => '1.2',
-    ]);
+            'foo'  => 1234,
+            'bar'  => null,
+            'buzz' => '1.2',
+        ]);
     }
 
     public function it_casts_via_magic_property_access()

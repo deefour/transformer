@@ -23,17 +23,17 @@ class MethodTransformerSpec extends ObjectBehavior
 
     public function it_includes_method_only_attributes_in_bulk_output()
     {
-      $this->get('method_attribute')->shouldBe(true);
-      $this->raw('method_attribute')->shouldBe(null);
-      $this->all()->shouldHaveKey('method_attribute');
+        $this->get('method_attribute')->shouldBe(true);
+        $this->raw('method_attribute')->shouldBe(null);
+        $this->all()->shouldHaveKey('method_attribute');
 
-      $this->only('method_attribute')->shouldHaveKey('method_attribute');
+        $this->only('method_attribute')->shouldHaveKey('method_attribute');
     }
 
     public function it_ignores_tagged_method_attributes()
     {
-      $this->get('ignore_me')->shouldBe(null);
-      $this->all()->shouldNotHaveKey('ignore_me');
+        $this->get('ignore_me')->shouldBe(null);
+        $this->all()->shouldNotHaveKey('ignore_me');
     }
 
     public function it_allows_plucking_groups_of_attributes_at_once()

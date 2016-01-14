@@ -26,6 +26,6 @@ class MethodTransformer extends Transformer
      */
     protected function ignoreMe()
     {
-      return true;
+        return true;
     }
 }

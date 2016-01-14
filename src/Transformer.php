@@ -165,7 +165,8 @@ class Transformer implements JsonSerializable, ArrayAccess
      *
      * @return array
      */
-    public function except() {
+    public function except()
+    {
         $blacklist = array_reduce((array)func_get_args(), function ($carry, $item) {
             return array_merge($carry, (array)$item);
         }, []);
@@ -173,17 +174,17 @@ class Transformer implements JsonSerializable, ArrayAccess
         $attributes = $this->toArray();
 
         foreach ($blacklist as $key => $value) {
-          if (is_string($value)) {
-            unset($attributes[$value]);
+            if (is_string($value)) {
+                unset($attributes[$value]);
 
-            continue;
-          }
+                continue;
+            }
 
-          if (is_array($value)) {
-            $attributes[$key] = (new static($attributes[$key]))->except($value);
+            if (is_array($value)) {
+                $attributes[$key] = (new static($attributes[$key]))->except($value);
 
-            continue;
-          }
+                continue;
+            }
         }
 
         return $attributes;

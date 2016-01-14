@@ -7,8 +7,8 @@ use Deefour\Transformer\Transformer;
 class CastTransformer extends Transformer
 {
     protected $casts = [
-      'foo' => 'int',
-      'bar' => 'json',
-      'baz' => 'float',
+        'foo' => 'int',
+        'bar' => 'json',
+        'baz' => 'float',
     ];
 }

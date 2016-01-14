@@ -8,18 +8,18 @@ use PhpSpec\ObjectBehavior;
 class TransformerSpec extends ObjectBehavior
 {
     protected $source = [
-      'foo' => '1234',
-      'bar' => null,
-      'profile' => [
-        'first_name' => 'Jason',
-        'last_name'  => 'Daly',
-        'state'      => 'CT',
-        'country'    => 'USA',
-      ],
-      'zap' => [
-        'bop' => true,
-        'pob' => false
-      ]
+        'foo' => '1234',
+        'bar' => null,
+        'profile' => [
+            'first_name' => 'Jason',
+            'last_name'  => 'Daly',
+            'state'      => 'CT',
+            'country'    => 'USA',
+        ],
+        'zap' => [
+            'bop' => true,
+            'pob' => false
+        ]
     ];
 
     public function let()
@@ -154,6 +154,8 @@ class TransformerSpec extends ObjectBehavior
 
     public function it_returns_evaluated_default_for_unknown_attribute()
     {
-        $this->get('invalid', function () { return true; })->shouldReturn(true);
+        $this->get('invalid', function () {
+            return true;
+        })->shouldReturn(true);
     }
 }

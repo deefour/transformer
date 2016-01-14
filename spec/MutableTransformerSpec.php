@@ -92,7 +92,8 @@ class MutableTransformerSpec extends ObjectBehavior
         $this->original('foo')->shouldReturn('aaa');
     }
 
-    public function it_will_detail_mapping_of_changed_attributes() {
+    public function it_will_detail_mapping_of_changed_attributes()
+    {
         $this->beConstructedWith([ 'foo' => 'aaa', 'bar' => 'bbb' ]);
 
         $this->foo = 'bbb';
