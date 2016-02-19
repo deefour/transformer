@@ -93,7 +93,7 @@ class MutableTransformer extends Transformer
      */
     public function original($attribute = null)
     {
-        if (! $this->isDirty($attribute)) {
+        if ( ! $this->isDirty($attribute)) {
             return $this->raw($attribute);
         }
 

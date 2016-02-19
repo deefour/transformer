@@ -49,7 +49,7 @@ class Transformer implements JsonSerializable, ArrayAccess
             return call_user_func([$this, $this->camelCase($attribute)]);
         }
 
-        if (!$this->exists($attribute)) {
+        if ( ! $this->exists($attribute)) {
             return ($default instanceof Closure) ? $default() : $default;
         }
 
@@ -76,7 +76,7 @@ class Transformer implements JsonSerializable, ArrayAccess
             return $this->attributes;
         }
 
-        if (!array_key_exists($attribute, $this->attributes)) {
+        if ( ! array_key_exists($attribute, $this->attributes)) {
             return null;
         }
 
@@ -141,7 +141,7 @@ class Transformer implements JsonSerializable, ArrayAccess
                 continue;
             }
 
-            if (!is_array($value)) { // invalid structure; move on
+            if ( ! is_array($value)) { // invalid structure; move on
                 continue;
             }
 
@@ -165,7 +165,7 @@ class Transformer implements JsonSerializable, ArrayAccess
      *
      * @return array
      */
-    public function except()
+    public function except() 
     {
         $blacklist = array_reduce((array)func_get_args(), function ($carry, $item) {
             return array_merge($carry, (array)$item);
@@ -381,7 +381,7 @@ class Transformer implements JsonSerializable, ArrayAccess
      */
     protected function addPermittedValue(array &$response, $attributes, $attribute)
     {
-        if (!$this->offsetExists($attribute)) {
+        if ( ! $this->offsetExists($attribute)) {
             return;
         }
 
@@ -402,7 +402,7 @@ class Transformer implements JsonSerializable, ArrayAccess
      */
     protected function addPermittedCollection(array &$response, $attributes, $attribute)
     {
-        if (!isset($attributes[$attribute]) || !is_array($attributes[$attribute])) {
+        if ( ! isset($attributes[$attribute]) || !is_array($attributes[$attribute])) {
             return;
         }
 
@@ -420,7 +420,7 @@ class Transformer implements JsonSerializable, ArrayAccess
      */
     protected function snakeCase($value)
     {
-        if (!ctype_lower($value)) {
+        if ( ! ctype_lower($value)) {
             $value = strtolower(preg_replace('/(.)(?=[A-Z])/', '$1_', $value));
             $value = preg_replace('/\s+/', '', $value);
         }
@@ -452,7 +452,7 @@ class Transformer implements JsonSerializable, ArrayAccess
     {
         $method = $this->camelCase($attribute);
 
-        if (!method_exists($this, $method)) {
+        if ( ! method_exists($this, $method)) {
             return false;
         }
 
