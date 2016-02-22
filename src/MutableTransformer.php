@@ -23,6 +23,9 @@ class MutableTransformer extends Transformer
 
     /**
      * ArrayAccess to set an attribute on the source data.
+     * 
+     * @ignore 
+     *
      */
     public function offsetSet($offset, $value)
     {
@@ -31,6 +34,8 @@ class MutableTransformer extends Transformer
 
     /**
      * ArrayAccess to remove an attribute from the source data.
+     *
+     * @ignore 
      *
      * @return mixed
      */
@@ -41,6 +46,8 @@ class MutableTransformer extends Transformer
 
     /**
      * Set an attribute on the source data.
+     *
+     * @ignore 
      *
      * @param string $attribute
      * @param mixed  $value
@@ -61,6 +68,8 @@ class MutableTransformer extends Transformer
     /**
      * Fetch a list of dirty attributes.
      *
+     * @ignore 
+     *
      * @return mixed
      */
     public function dirty()
@@ -71,6 +80,8 @@ class MutableTransformer extends Transformer
     /**
      * Boolean check if an attribute is dirty. If no attribute is passed, a check
      * will be made to see if _any_ attribute on the transformer is dirty.
+     *
+     * @ignore 
      *
      * @param string $attribute
      * @return boolean
@@ -88,6 +99,8 @@ class MutableTransformer extends Transformer
      * Fetch the original value of the attribute. If no attribute is specified,
      * return a merge of the originals from the changeset with untouched attributes.
      *
+     * @ignore 
+     *
      * @param  string $attribute [optional]
      * @return mixed
      */
@@ -103,6 +116,8 @@ class MutableTransformer extends Transformer
     /**
      * Output key/value mapping of only the changed attributes.
      *
+     * @ignore 
+     *
      * @return array
      */
     public function changes()
@@ -117,6 +132,8 @@ class MutableTransformer extends Transformer
 
     /**
      * {@inheritdoc}
+     * 
+     * @ignore 
      *
      * Magic setter.
      *
@@ -130,6 +147,8 @@ class MutableTransformer extends Transformer
 
     /**
      * Accessor/mutator via magic call.
+     *
+     * @ignore 
      *
      * @param string $method
      * @param array  $parameters

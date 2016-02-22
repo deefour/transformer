@@ -6,25 +6,25 @@ use Deefour\Transformer\Transformer;
 
 class MethodTransformer extends Transformer
 {
-    protected function foo()
+    public function foo()
     {
         return strtoupper($this->raw('foo'));
     }
 
-    protected function barBaz()
+    public function barBaz()
     {
         return ucfirst($this->raw('bar_baz'));
     }
 
-    protected function methodAttribute()
+    public function methodAttribute()
     {
         return true;
     }
 
     /**
-     * @internal
+     * @ignore
      */
-    protected function ignoreMe()
+    public function ignoreMe()
     {
         return true;
     }
