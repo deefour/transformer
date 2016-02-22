@@ -38,8 +38,6 @@ class Transformer implements JsonSerializable, ArrayAccess
     /**
      * Retrieve a single transformed attribute.
      *
-     * @ignore
-     *
      * @param string $attribute
      * @param mixed  $default
      *
@@ -68,8 +66,6 @@ class Transformer implements JsonSerializable, ArrayAccess
      * The raw attribute value. If no attribute is provided, the raw source is
      * returned (no transformation is performed).
      *
-     * @ignore
-     *
      * @param string $attribute [optional]
      *
      * @return mixed
@@ -89,8 +85,6 @@ class Transformer implements JsonSerializable, ArrayAccess
 
     /**
      * Transform the entire input source.
-     *
-     * @ignore
      *
      * @return array
      */
@@ -128,8 +122,6 @@ class Transformer implements JsonSerializable, ArrayAccess
     /**
      * Retrieve a specific subset of the attributes from the transformation. This
      * is smart enough to understand nested sets of attributes.
-     *
-     * @ignore
      *
      * @return array
      */
@@ -171,8 +163,6 @@ class Transformer implements JsonSerializable, ArrayAccess
      * Retrieve everything _except_ a subset of the attributes from the
      * transformation. This is smart enough to understand nested sets of attributes.
      *
-     * @ignore
-     *
      * @return array
      */
     public function except() 
@@ -204,8 +194,6 @@ class Transformer implements JsonSerializable, ArrayAccess
      * Boolean check whether the attribute exists on the source data, even if
      * it's null.
      *
-     * @ignore
-     *
      * @param string $attribute
      *
      * @return bool
@@ -219,8 +207,6 @@ class Transformer implements JsonSerializable, ArrayAccess
     /**
      * {@inheritdoc}
      *
-     * @ignore
-     *
      * @return array
      */
     public function jsonSerialize()
@@ -231,8 +217,6 @@ class Transformer implements JsonSerializable, ArrayAccess
     /**
      * {@inheritdoc}
      *
-     * @ignore
-     *
      * @return bool
      */
     public function offsetExists($offset)
@@ -242,8 +226,6 @@ class Transformer implements JsonSerializable, ArrayAccess
 
     /**
      * {@inheritdoc}
-     *
-     * @ignore
      *
      * @return mixed
      */
@@ -256,8 +238,6 @@ class Transformer implements JsonSerializable, ArrayAccess
      * {@inheritdoc}
      *
      * This is a void method because the object attributes are immutable.
-     *
-     * @ignore
      */
     public function offsetSet($offset, $value)
     {
@@ -268,8 +248,6 @@ class Transformer implements JsonSerializable, ArrayAccess
      * {@inheritdoc}
      *
      * This is a void method because the object attributes are immutable.
-     *
-     * @ignore
      */
     public function offsetUnset($offset)
     {
@@ -278,8 +256,6 @@ class Transformer implements JsonSerializable, ArrayAccess
 
     /**
      * Fetch an array representation of the transformed attribute source.
-     *
-     * @ignore
      *
      * @return array
      */
@@ -291,8 +267,6 @@ class Transformer implements JsonSerializable, ArrayAccess
     /**
      * {@inheritdoc}
      *
-     * @ignore
-     *
      * @return mixed
      */
     public function __get($attribute)
@@ -303,8 +277,6 @@ class Transformer implements JsonSerializable, ArrayAccess
     /**
      * {@inheritdoc}
      *
-     * @ignore
-     *
      * @return bool
      */
     public function __isset($attribute)
@@ -314,8 +286,6 @@ class Transformer implements JsonSerializable, ArrayAccess
 
     /**
      * Accessor via magic call.
-     *
-     * @ignore
      *
      * @param string $method
      * @param array  $parameters
@@ -474,13 +444,11 @@ class Transformer implements JsonSerializable, ArrayAccess
 
         $method = new ReflectionMethod($this, $method);
 
-        return $method->isPublic() && strpos($method->getDocComment(), '@ignore') === false;
+        return $method->isPublic() && strpos($method->getDocComment(), '@attribute') !== false;
     }
 
     /**
      * Magic method for useful debug info.
-     *
-     * @ignore
      *
      * @return array
      */
