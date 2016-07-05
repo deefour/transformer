@@ -152,7 +152,7 @@ class Transformer implements JsonSerializable, ArrayAccess
             }
 
             if (array_key_exists($key, $attributes)) { // recursion
-                $response[$key] = (new static($attributes[$key]))->only($value);
+                $response[$key] = (new self($attributes[$key]))->only($value);
             }
         }
 
@@ -165,7 +165,7 @@ class Transformer implements JsonSerializable, ArrayAccess
      *
      * @return array
      */
-    public function except() 
+    public function except()
     {
         $blacklist = array_reduce((array)func_get_args(), function ($carry, $item) {
             return array_merge($carry, (array)$item);
@@ -181,7 +181,7 @@ class Transformer implements JsonSerializable, ArrayAccess
             }
 
             if (is_array($value)) {
-                $attributes[$key] = (new static($attributes[$key]))->except($value);
+                $attributes[$key] = (new self($attributes[$key]))->except($value);
 
                 continue;
             }
