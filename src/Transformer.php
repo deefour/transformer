@@ -224,6 +224,14 @@ class Transformer implements JsonSerializable, ArrayAccess
         return $this->has($attribute);
     }
 
+    /**
+     * List the name of the attributes.
+     *
+     * @return array
+     */
+    public function keys()
+    {
+        return array_keys($this->attributes);
     }
 
     /**

@@ -164,4 +164,9 @@ class TransformerSpec extends ObjectBehavior
             return true;
         })->shouldReturn(true);
     }
+
+    public function it_returns_attribute_keys()
+    {
+        $this->keys()->shouldReturn(['foo', 'bar', 'profile', 'zap']);
+    }
 }
