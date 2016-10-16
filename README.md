@@ -239,7 +239,7 @@ $transformer->changes(); //=> [ 'foo' => 'new value' ]
 
 ## Changelog
 
-#### 1.1.0 - October 16, 2016
+#### 1.3.0 - October 16, 2016
 
  - The `@attribute` annotation only needs to be set on methods you wish to be treated as attributes that are not camel-cased versions of attributes that exist on the raw input source.
  - `omit()` and `without()` have been added as aliases for `except()`.
