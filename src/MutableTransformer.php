@@ -12,18 +12,8 @@ class MutableTransformer extends Transformer
     protected $changes = [];
 
     /**
-     * Constructor.
-     *
-     * @param array $attributes [optional]
-     */
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-    }
-
-    /**
      * ArrayAccess to set an attribute on the source data.
-     * 
+     *
      */
     public function offsetSet($offset, $value)
     {
