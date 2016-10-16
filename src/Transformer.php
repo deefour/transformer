@@ -191,6 +191,26 @@ class Transformer implements JsonSerializable, ArrayAccess
     }
 
     /**
+     * Alias for except.
+     *
+     * @return array
+     */
+    public function omit()
+    {
+        return $this->except(func_get_args());
+    }
+
+    /**
+     * Alias for except.
+     *
+     * @return array
+     */
+    public function without()
+    {
+        return $this->except(func_get_args());
+    }
+
+    /**
      * Boolean check whether the attribute exists on the source data, even if
      * it's null.
      *
