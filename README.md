@@ -24,10 +24,10 @@ composer require deefour/transformer
  - All transformers extend the abstract `Deefour\Transformer\Transformer` class.
  - A tranformer accepts a single array of data during instantiation.
  - Attributes on the input source can be cast into specific types.
- - A method can be created for each attribute to define a transformation of it's raw value.
+ - A getter can be created for each attribute to define a transformation of it's raw value.
  - Methods can be created to provide additional, custom attributes.
  - The input source on the transformer is immutable.
- - The transformer can be queried to retrieve "transformed" versions of individual attributes from the source data or the entire data set.
+ - The transformer can be queried to retrieve transformed versions of individual attributes from the source data or the entire data set.
 
 ## Example
 
@@ -42,7 +42,7 @@ $input = [
 ];
 ```
 
-Let's also say that we want to be sure the title of the book has been properly titleized, the price is a float value, and the publication date is a `Carbon\Carbon` datetime object. The attributes of this raw `$input` can be converted into a DTO containing attributes formatted in a specific, consistent format. These conversions can be done easily by passing the raw data into a transformer for the book.
+Let's also say that we want to be sure the title of the book has been properly titleized, the price is a float value, and the publication date is a `Carbon\Carbon` datetime object. The attributes of this raw `$input` can be formatted in a specific, consistent format using a transformer.
 
 ```php
 use Deefour\Transformer\Transformer;
@@ -54,21 +54,21 @@ class BookTransformer extends Transformer
         'price' => 'float',
     ];
 
-    protected function title()
+    public function title()
     {
         return trim(ucwords($this->raw('title')));
     }
 
-    protected function publicationDate()
+    public function publicationDate()
     {
         return Carbon::parse($this->raw('publication_date'));
     }
 }
 ```
 
-The `$casts` property is an array composed of attribute names as its keys and the scalar type the attribute should be cast into by the transformer as the values.
+The `$casts` property is an array composed of attribute names as its keys and the scalar type the attribute should be cast into by the transformer as its values.
 
-The methods are optional, each having protected visibility and being named after a camel-cased version of an attribute. These methods will be called whenever those attributes are requested from the transformer.
+The methods are optional, each having public visibility and being named after a camel-cased version of an attribute. These methods will be called whenever those attributes are requested from the transformer.
 
 ```php
 $transform = new BookTransformer($input);
@@ -80,43 +80,44 @@ $transform->get('publication_date'); //=> Carbon\Carbon instance
 
 ### Method Attributes
 
-Any `protected` method added to a transformer is treated as an attribute, even if the snake-cased version of the method name is not found in the `$attributes` source on the class. An `@internal` tag can be added to the docblock of any `protected` method that should **not** be treated as an attribute on the transformer.
+Public methods marked with `@attribute` in their docblock are be treated as attributes on the transformer's `$attributes` source.
 
 ```php
 class BookTransformer extends Transformer
 {
     /**
-     * Fetch the cover image URL from a web service.
+     * Is the book considered old?
      *
+     * @attribute
      * @return string
      */
-    protected function coverImage()
+    public function isOld()
     {
-        return $this->fetchTheImage()['thumbnail'];
+        return $this->publication_date < Carbon::now()->subYears(10);
     }
 
     /**
-     * Get the raw JSON response from the web service for the image.
+     * Is the book nonfiction?
      *
-     * @internal
      * @return boolean
      */
-    protected function fetchTheImage()
+    public function internalSlug()
     {
-        return true;
+        return sha1($this->title . (string)$this->publication_date);
     }
 }
 ```
 
-Although a `'cover_image'` attribute is not provided to the transformer during construction, it functions as any other attribute. `fetchTheImage` will be ignored.
+The `isOld` method is marked with an `@attribute` annotation in the docblock, causing the transformer to behave as though an `is_old` attribute exists on the source data. `internalSlug()` can be called directly, but it will not be treated as some `internal_slug` attribute because it has not been marked properly with a docblock annotation.
 
 ```php
 $transform = new BookTransformer([ 'title' => 'A Whole New World' ]);
 
-$transform->get('title');      //=> 'A Whole New World'
-$transform->get('cover_image') //=> 'http://some.cdn.path/to/an/image.png'
+$transform->get('title');          //=> 'A Whole New World'
+$transform->get('is_old')          //=> false
+$transformer->get('internal_slug') //=> null
 
-$transform->all(); //=> [ 'title' => 'A Whole New World', 'cover_image' => 'http://some.cdn.path/to/an/image.png' ]
+$transform->all();                 //=> [ 'title' => 'A Whole New World', 'is_old' => false ]
 ```
 
 
@@ -147,6 +148,8 @@ The existince of a property can be checked through `__isset()` or the api
 isset($transform->title);
 
 $transform->exists('title');
+$transform->has('title');
+$transform->contains('title');
 ```
 
 Transformers also implement `ArrayAccess` *(attempting to set or unset throws an exception)*.
@@ -169,6 +172,7 @@ $transform->only('title', 'price'); //=> [ 'title' => 'A Whole New World', 'pric
 
 ```php
 $transform->except('secret_key'); //=> everything except the 'secret_key' attribute.
+$transform->omit('secret_key');
 ```
 
 The `JsonSerializable` interface is also implemented.
@@ -235,6 +239,12 @@ $transformer->changes(); //=> [ 'foo' => 'new value' ]
 
 ## Changelog
 
+#### 1.1.0 - October 16, 2016
+
+ - The `@attribute` annotation only needs to be set on methods you wish to be treated as attributes that are not camel-cased versions of attributes that exist on the raw input source.
+ - `omit()` and `without()` have been added as aliases for `except()`.
+ - `has()` and `contains()` have been added as aliases for `exists()`.
+
 #### 1.0.1 - October 29, 2015
 
  - Added `except()` method.
@@ -285,4 +295,4 @@ $transformer->changes(); //=> [ 'foo' => 'new value' ]
 
 ## License
 
-Copyright (c) 2015 [Jason Daly](http://www.deefour.me) ([deefour](https://github.com/deefour)). Released under the [MIT License](http://deefour.mit-license.org/).
+Copyright (c) 2016 [Jason Daly](http://www.deefour.me) ([deefour](https://github.com/deefour)). Released under the [MIT License](http://deefour.mit-license.org/).
