@@ -74,6 +74,12 @@ class TransformerSpec extends ObjectBehavior
     {
         $this->exists('foo')->shouldReturn(true);
         $this->exists('baz')->shouldReturn(false);
+
+        $this->contains('foo')->shouldReturn(true);
+        $this->contains('baz')->shouldReturn(false);
+
+        $this->has('foo')->shouldReturn(true);
+        $this->has('baz')->shouldReturn(false);
     }
 
     public function it_can_be_serialized_to_json()

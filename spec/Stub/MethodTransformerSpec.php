@@ -46,4 +46,19 @@ class MethodTransformerSpec extends ObjectBehavior
 
         $this->only('method_attribute')->shouldEqual(['method_attribute' => true]);
     }
+
+    public function it_should_respond_to_isset_checks_properly_for_docblock_attributes()
+    {
+        $this->exists('ignore_me')->shouldReturn(false);
+        $this->has('ignore_me')->shouldReturn(false);
+        $this->contains('ignore_me')->shouldReturn(false);
+
+        $this->exists('method_attribute')->shouldReturn(true);
+        $this->has('method_attribute')->shouldReturn(true);
+        $this->contains('method_attribute')->shouldReturn(true);
+
+        $this->exists('bar_baz')->shouldReturn(true);
+        $this->has('bar_baz')->shouldReturn(true);
+        $this->contains('bar_baz')->shouldReturn(true);
+    }
 }

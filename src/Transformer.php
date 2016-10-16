@@ -194,14 +194,36 @@ class Transformer implements JsonSerializable, ArrayAccess
      * Boolean check whether the attribute exists on the source data, even if
      * it's null.
      *
-     * @param string $attribute
-     *
+     * @param  string $attribute
+     * @param  boolean $sourceOnly  should only the raw input source's keys be cheked?
      * @return bool
      */
-    public function exists($attribute)
+    public function exists($attribute, $sourceOnly = false)
     {
         return array_key_exists($attribute, $this->attributes)
-            || $this->isAttributeMethod($attribute);
+            || ( ! $sourceOnly && $this->isAttributeMethod($attribute));
+    }
+
+    /**
+     * Alias for exists.
+     *
+     * @param  string  $attribute
+     * @return boolean
+     */
+    public function has($attribute) {
+        return $this->exists($attribute);
+    }
+
+    /**
+     * Alias for exists.
+     *
+     * @param  string  $attribute
+     * @return boolean
+     */
+    public function contains($attribute) {
+        return $this->has($attribute);
+    }
+
     }
 
     /**
@@ -440,6 +462,10 @@ class Transformer implements JsonSerializable, ArrayAccess
 
         if ( ! method_exists($this, $method)) {
             return false;
+        }
+
+        if ($this->exists($attribute, true)) {
+            return true;
         }
 
         $method = new ReflectionMethod($this, $method);
