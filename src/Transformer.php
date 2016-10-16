@@ -28,7 +28,7 @@ class Transformer implements JsonSerializable, ArrayAccess
     /**
      * Constructor.
      *
-     * @param array $attributes [optional]
+     * @param array $attributes
      */
     public function __construct(array $attributes = [])
     {
@@ -38,9 +38,8 @@ class Transformer implements JsonSerializable, ArrayAccess
     /**
      * Retrieve a single transformed attribute.
      *
-     * @param string $attribute
-     * @param mixed  $default
-     *
+     * @param  string $attribute
+     * @param  mixed  $default
      * @return mixed
      */
     public function get($attribute, $default = null)
@@ -66,8 +65,7 @@ class Transformer implements JsonSerializable, ArrayAccess
      * The raw attribute value. If no attribute is provided, the raw source is
      * returned (no transformation is performed).
      *
-     * @param string $attribute [optional]
-     *
+     * @param  string|null $attribute
      * @return mixed
      */
     public function raw($attribute = null)
@@ -337,9 +335,8 @@ class Transformer implements JsonSerializable, ArrayAccess
     /**
      * Accessor via magic call.
      *
-     * @param string $method
-     * @param array  $parameters
-     *
+     * @param  string $method
+     * @param  array  $parameters
      * @return mixed
      */
     public function __call($method, $parameters)
@@ -350,8 +347,7 @@ class Transformer implements JsonSerializable, ArrayAccess
     /**
      * Determine whether an attribute should be casted to a native type.
      *
-     * @param string $attribute
-     *
+     * @param  string $attribute
      * @return bool
      */
     protected function hasCast($attribute)
@@ -364,8 +360,7 @@ class Transformer implements JsonSerializable, ArrayAccess
      *
      * Pulled from Laravel's Illuminate\Database\Eloquent\Model::getCastType
      *
-     * @param string $key
-     *
+     * @param  string $key
      * @return string
      */
     protected function getCastType($key)
@@ -378,8 +373,7 @@ class Transformer implements JsonSerializable, ArrayAccess
      *
      * Pulled from Laravel's Illuminate\Database\Eloquent\Model::castAttribute
      *
-     * @param mixed $attribute
-     *
+     * @param  mixed $attribute
      * @return mixed
      */
     protected function cast($attribute)
@@ -416,10 +410,9 @@ class Transformer implements JsonSerializable, ArrayAccess
     /**
      * Adds a specific attribute to the response object.
      *
-     * @param array  $response
-     * @param mixed  $attributes
-     * @param string $attribute
-     *
+     * @param  array  $response
+     * @param  mixed  $attributes
+     * @param  string $attribute
      * @return array
      */
     protected function addPermittedValue(array &$response, $attributes, $attribute)
@@ -436,10 +429,9 @@ class Transformer implements JsonSerializable, ArrayAccess
     /**
      * Adds an arbitrary collection to the response object, by key.
      *
-     * @param array  $response
-     * @param mixed  $attributes
-     * @param string $attribute
-     *
+     * @param  array  $response
+     * @param  mixed  $attributes
+     * @param  string $attribute
      * @return array
      */
     protected function addPermittedCollection(array &$response, $attributes, $attribute)

@@ -33,8 +33,9 @@ class MutableTransformer extends Transformer
     /**
      * Set an attribute on the source data.
      *
-     * @param string $attribute
-     * @param mixed  $value
+     * @param  string $attribute
+     * @param  mixed  $value
+     * @return void
      */
     public function set($attribute, $value)
     {
@@ -63,7 +64,7 @@ class MutableTransformer extends Transformer
      * Boolean check if an attribute is dirty. If no attribute is passed, a check
      * will be made to see if _any_ attribute on the transformer is dirty.
      *
-     * @param string $attribute
+     * @param  string $attribute
      * @return boolean
      */
     public function isDirty($attribute = null)
@@ -108,11 +109,12 @@ class MutableTransformer extends Transformer
 
     /**
      * {@inheritdoc}
-     * 
+     *
      * Magic setter.
      *
-     * @param string $attribute
-     * @param mixed  $value
+     * @param  string $attribute
+     * @param  mixed  $value
+     * @return void
      */
     public function __set($attribute, $value)
     {
@@ -122,9 +124,8 @@ class MutableTransformer extends Transformer
     /**
      * Accessor/mutator via magic call.
      *
-     * @param string $method
-     * @param array  $parameters
-     *
+     * @param  string $method
+     * @param  array  $parameters
      * @return mixed
      */
     public function __call($method, $parameters)
