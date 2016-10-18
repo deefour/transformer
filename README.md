@@ -17,8 +17,6 @@ composer require deefour/transformer
 
 **`>=PHP5.5.0` is required.**
 
-> **Note:** A work-in-progress attempt to explain how I use this package along with [`deefour/interactor`](https://github.com/deefour/interactor) and [`deefour/authorizer`](https://github.com/deefour/authorizer) to aide me in application development **[is available at this gist](https://gist.github.com/deefour/c6cfcebe808216a874f5)**.
-
 ## Overview
 
  - All transformers extend the abstract `Deefour\Transformer\Transformer` class.
