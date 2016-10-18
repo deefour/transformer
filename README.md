@@ -50,8 +50,12 @@ use Carbon\Carbon;
 
 class BookTransformer extends Transformer
 {
-    protected $casts [
+    protected $casts = [
         'price' => 'float',
+    ];
+    
+    protected $defaultValues = [
+        'price' => 99.99,
     ];
 
     public function title()
@@ -75,6 +79,26 @@ $transform = new BookTransformer($input);
 
 $transform->get('title');            //=> 'A Whole New World'
 $transform->get('price');            //=> 29.95 (cast to a float)
+$transform->get('publication_date'); //=> Carbon\Carbon instance
+```
+
+What if the `$input` doesn't bring a `price` attribute?
+
+```php
+$input = [
+    'title'            => 'a whole new world',
+    'publication_date' => '2010-12-09',
+    'author'           => 'Jason Daly',
+];
+```
+
+In this case, the `$defaultValues` property will be taken into account and the return will be as follows:
+
+```php
+$transform = new BookTransformer($input);
+
+$transform->get('title');            //=> 'A Whole New World'
+$transform->get('price');            //=> 99.99 (as defined in $defaultValues['price'])
 $transform->get('publication_date'); //=> Carbon\Carbon instance
 ```
 
