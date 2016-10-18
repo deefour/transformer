@@ -24,6 +24,14 @@ class Transformer implements JsonSerializable, ArrayAccess
      * @var array
      */
     protected $casts = [];
+    
+    /**
+     * Default values for variables. Keys are attribute names, values are
+     * the default values to be used.
+     *
+     * @var array
+     */
+    protected $defaultValues = [];
 
     /**
      * Constructor.
@@ -45,20 +53,30 @@ class Transformer implements JsonSerializable, ArrayAccess
     public function get($attribute, $default = null)
     {
         if ($this->isAttributeMethod($attribute)) {
-            return call_user_func([$this, $this->camelCase($attribute)]);
+            $return = call_user_func([$this, $this->camelCase($attribute)]);
         }
 
-        if ( ! $this->exists($attribute)) {
-            return ($default instanceof Closure) ? $default() : $default;
+        if ( ! $this->exists($attribute) && !isset($return)) {
+            $return = ($default instanceof Closure) ? $default() : $default;
         }
 
         // Try to cast the attribute value.
-        if ($this->hasCast($attribute)) {
-            return $this->cast($attribute);
+        if ($this->hasCast($attribute) && !isset($return)) {
+            $return = $this->cast($attribute);
         }
 
         // If no transformation has been specified, return the raw input.
-        return $this->raw($attribute);
+        if (!isset($return)) {
+            $return = $this->raw($attribute);
+        }
+
+        $defaultValue = $this->defaultValueFor($attribute);
+
+        if (is_null($return) && $defaultValue) {
+            return $defaultValue;
+        }
+
+        return $return;
     }
 
     /**
@@ -491,6 +509,22 @@ class Transformer implements JsonSerializable, ArrayAccess
         $method = new ReflectionMethod($this, $method);
 
         return $method->isPublic() && strpos($method->getDocComment(), '@attribute') !== false;
+    }
+    
+    /**
+     * Returns default value for a given property.
+     *
+     * @param  string $property
+     *
+     * @return mixed
+     */
+    protected function defaultValueFor($property)
+    {
+        if (isset($this->defaultValues[$property])) {
+            return $this->defaultValues[$property];
+        }
+
+        return null;
     }
 
     /**
