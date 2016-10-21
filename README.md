@@ -66,7 +66,7 @@ class BookTransformer extends Transformer
 }
 ```
 
-The `$casts` property is an array composed of attribute names as its keys and the scalar type the attribute should be cast into by the transformer as its values.
+The `$casts` property is an array c.
 
 The methods are optional, each having public visibility and being named after a camel-cased version of an attribute. These methods will be called whenever those attributes are requested from the transformer.
 
@@ -76,6 +76,60 @@ $transform = new BookTransformer($input);
 $transform->get('title');            //=> 'A Whole New World'
 $transform->get('price');            //=> 29.95 (cast to a float)
 $transform->get('publication_date'); //=> Carbon\Carbon instance
+```
+
+### Casts
+
+A protected `$casts` property can be added to a transformer, composed of attribute names as its keys and the scalar type the attribute should be cast into by the transformer as its values. This mapping will be checked as attributes are returned from a transformer, casting them to the desired type.
+
+```php
+class BookTransformer extends Transformer
+{
+    protected $casts [
+        'price' => 'float',
+    ];
+}
+
+$attributes  = [ 'price' => '3.23' ];
+$transformer = new BookTransformer($attributes);
+
+$transformer->price; //=> 3.23 (cast to a float)
+```
+
+> **Note:** Casts to type 'object' and 'array' will be converted to JSON using [`json_encode`](https://php.net/json_encode).
+
+### Defaults
+
+A protected `$defaults` property can be added to a transformer, composed of attribute names as its keys and default values as its values. This mapping will be checked as attributes are requested from a transformer but cannot be found on the source data **or whose value is `NULL`**.
+
+
+### Accepting `NULL` Values
+
+If an attributes on the source with a `NULL` value should generally be accepted in favor of a default value in the `$defaults` mapping, this can be enabled for the lifecycle of a request on all transformers by running the following:
+
+```php
+Deefour\Transformer\Transformer::preferNullValues();
+```
+
+To illustrate the difference:
+
+```php
+class BookTransformer extends Transformer
+{
+    protected $defaults [
+        'category' => 'Miscellaneous',
+    ];
+}
+
+
+$attributes  = [ 'category' => null ];
+$transformer = new BookTransformer($attributes);
+
+$transformer->category; //=> Miscellaneous
+
+Deefour\Transformer\Transformer::preferNullValues();
+
+$transformer->category; //=> null
 ```
 
 ### Method Attributes
@@ -238,6 +292,10 @@ $transformer->changes(); //=> [ 'foo' => 'new value' ]
 - Source Code: https://github.com/deefour/transformer
 
 ## Changelog
+
+#### 1.4.0 - October 20, 2016
+
+ - Support for default attributes being set on a class' new `$defaults` property. This set of defaults will be checked when an attribute is requested which does not exist or is `NULL`. Thanks to [@dgallinari](https://github.com/dgallinari) [#2](https://github.com/deefour/transformer/pull/2)
 
 #### 1.3.0 - October 16, 2016
 

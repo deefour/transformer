@@ -18,12 +18,27 @@ class Transformer implements JsonSerializable, ArrayAccess
     protected $attributes = [];
 
     /**
+     * Default attribute => value pairs.
+     *
+     * @var array
+     */
+    protected $defaults = [];
+
+    /**
      * Array of casts to be performed. Keys are attribute names, values are
      * type casts.
      *
      * @var array
      */
     protected $casts = [];
+
+    /**
+     * The flag for null value priority.
+     *
+     * @see static::preferNullValues()
+     * @var boolean
+     */
+    static protected $preferNullValues = false;
 
     /**
      * Constructor.
@@ -36,6 +51,18 @@ class Transformer implements JsonSerializable, ArrayAccess
     }
 
     /**
+     * Tells lookups to give priority to NULL source attribute values for existing
+     * keys, or look to defaults.
+     *
+     * @param  boolean $flag
+     * @return void
+     */
+    static public function preferNullValues($flag = true)
+    {
+        static::$preferNullValues = $flag;
+    }
+
+    /**
      * Retrieve a single transformed attribute.
      *
      * @param  string $attribute
@@ -45,20 +72,47 @@ class Transformer implements JsonSerializable, ArrayAccess
     public function get($attribute, $default = null)
     {
         if ($this->isAttributeMethod($attribute)) {
-            return call_user_func([$this, $this->camelCase($attribute)]);
+            $result = call_user_func([$this, $this->camelCase($attribute)]);
+
+            if ( ! is_null($result)) {
+                return $result;
+            }
         }
 
-        if ( ! $this->exists($attribute)) {
+        if ( ! $this->exists($attribute) && isset($default)) {
             return ($default instanceof Closure) ? $default() : $default;
         }
 
-        // Try to cast the attribute value.
         if ($this->hasCast($attribute)) {
             return $this->cast($attribute);
         }
 
-        // If no transformation has been specified, return the raw input.
-        return $this->raw($attribute);
+        $raw = $this->raw($attribute);
+
+        if ( ! is_null($raw) || static::$preferNullValues) {
+            return $raw;
+        }
+
+        return $this->default($attribute);
+    }
+
+    /**
+     * The default value set on the transformer for an attribute. If no attribute
+     * is provided, the full defaults array is returned.
+     *
+     * @param  string|null $attribute
+     * @return mixed
+     */
+    public function default($attribute = null) {
+        if (is_null($attribute)) {
+            return $this->defaults;
+        }
+
+        if ( ! array_key_exists($attribute, $this->defaults)) {
+            return null;
+        }
+
+        return $this->defaults[$attribute];
     }
 
     /**
@@ -114,7 +168,7 @@ class Transformer implements JsonSerializable, ArrayAccess
             $transformation[$attribute] = $this->$method();
         }
 
-        return $transformation;
+        return array_merge($this->default(), $transformation);
     }
 
     /**
