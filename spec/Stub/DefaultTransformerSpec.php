@@ -19,9 +19,9 @@ class DefaultTransformerSpec extends ObjectBehavior
 
     function it_should_allow_direct_access_to_defaults()
     {
-        $this->default('foo')->shouldReturn(1);
-        $this->default('bar')->shouldReturn(2);
-        $this->default('unknown')->shouldReturn(null);
+        $this->fallback('foo')->shouldReturn(1);
+        $this->fallback('bar')->shouldReturn(2);
+        $this->fallback('unknown')->shouldReturn(null);
     }
 
     function it_should_return_defaults_via_regular_gets()
@@ -35,7 +35,7 @@ class DefaultTransformerSpec extends ObjectBehavior
 
     function it_should_return_all_defaults_by_default()
     {
-        $this->default()->shouldEqual([ 'foo' => 1, 'bar' => 2, 'baz' => 3 ]);
+        $this->fallback()->shouldEqual([ 'foo' => 1, 'bar' => 2, 'baz' => 3 ]);
     }
 
     function it_should_merge_defaults_into_all()

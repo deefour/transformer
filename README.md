@@ -96,14 +96,14 @@ $transformer->price; //=> 3.23 (cast to a float)
 
 > **Note:** Casts to type 'object' and 'array' will be converted to JSON using [`json_encode`](https://php.net/json_encode).
 
-### Defaults
+### Fallbacks (Default Values)
 
-A protected `$defaults` property can be added to a transformer, composed of attribute names as its keys and default values as its values. This mapping will be checked as attributes are requested from a transformer but cannot be found on the source data **or whose value is `NULL`**.
+A protected `$fallbacks` property can be added to a transformer, composed of attribute names as its keys and default values as its values. This mapping will be checked as attributes are requested from a transformer but cannot be found on the source data **or whose value is `NULL`**.
 
 
 #### Accepting `NULL` Values
 
-If an attributes on the source with a `NULL` value should generally be accepted in favor of a default value in the `$defaults` mapping, this can be enabled for the lifecycle of a request on all transformers by running the following:
+If an attributes on the source with a `NULL` value should generally be accepted in favor of a default value in the `$fallbacks` mapping, this can be enabled for the lifecycle of a request on all transformers by running the following:
 
 ```php
 Deefour\Transformer\Transformer::preferNullValues();
@@ -114,7 +114,7 @@ To illustrate the difference:
 ```php
 class BookTransformer extends Transformer
 {
-    protected $defaults [
+    protected $fallbacks [
         'category' => 'Miscellaneous',
     ];
 }
@@ -293,7 +293,7 @@ $transformer->changes(); //=> [ 'foo' => 'new value' ]
 
 #### 1.4.0 - October 20, 2016
 
- - Support for default attributes being set on a class' new `$defaults` property. This set of defaults will be checked when an attribute is requested which does not exist or is `NULL`. Thanks to [@dgallinari](https://github.com/dgallinari) [#2](https://github.com/deefour/transformer/pull/2)
+ - Support for default attributes being set on a class' new `$fallbacks` property. This set of defaults will be checked when an attribute is requested which does not exist or is `NULL`. Thanks to [@dgallinari](https://github.com/dgallinari) [#2](https://github.com/deefour/transformer/pull/2)
 
 #### 1.3.0 - October 16, 2016
 

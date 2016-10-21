@@ -22,7 +22,7 @@ class Transformer implements JsonSerializable, ArrayAccess
      *
      * @var array
      */
-    protected $defaults = [];
+    protected $fallbacks = [];
 
     /**
      * Array of casts to be performed. Keys are attribute names, values are
@@ -52,7 +52,7 @@ class Transformer implements JsonSerializable, ArrayAccess
 
     /**
      * Tells lookups to give priority to NULL source attribute values for existing
-     * keys, or look to defaults.
+     * keys, or look to fallbacks.
      *
      * @param  boolean $flag
      * @return void
@@ -66,10 +66,10 @@ class Transformer implements JsonSerializable, ArrayAccess
      * Retrieve a single transformed attribute.
      *
      * @param  string $attribute
-     * @param  mixed  $default
+     * @param  mixed  $fallback
      * @return mixed
      */
-    public function get($attribute, $default = null)
+    public function get($attribute, $fallback = null)
     {
         if ($this->isAttributeMethod($attribute)) {
             $result = call_user_func([$this, $this->camelCase($attribute)]);
@@ -79,8 +79,8 @@ class Transformer implements JsonSerializable, ArrayAccess
             }
         }
 
-        if ( ! $this->exists($attribute) && isset($default)) {
-            return ($default instanceof Closure) ? $default() : $default;
+        if ( ! $this->exists($attribute) && isset($fallback)) {
+            return ($fallback instanceof Closure) ? $fallback() : $fallback;
         }
 
         if ($this->hasCast($attribute)) {
@@ -93,7 +93,7 @@ class Transformer implements JsonSerializable, ArrayAccess
             return $raw;
         }
 
-        return $this->default($attribute);
+        return $this->fallback($attribute);
     }
 
     /**
@@ -103,16 +103,16 @@ class Transformer implements JsonSerializable, ArrayAccess
      * @param  string|null $attribute
      * @return mixed
      */
-    public function default($attribute = null) {
+    public function fallback($attribute = null) {
         if (is_null($attribute)) {
-            return $this->defaults;
+            return $this->fallbacks;
         }
 
-        if ( ! array_key_exists($attribute, $this->defaults)) {
+        if ( ! array_key_exists($attribute, $this->fallbacks)) {
             return null;
         }
 
-        return $this->defaults[$attribute];
+        return $this->fallbacks[$attribute];
     }
 
     /**
@@ -168,7 +168,7 @@ class Transformer implements JsonSerializable, ArrayAccess
             $transformation[$attribute] = $this->$method();
         }
 
-        return array_merge($this->default(), $transformation);
+        return array_merge($this->fallback(), $transformation);
     }
 
     /**
