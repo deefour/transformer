@@ -101,7 +101,7 @@ $transformer->price; //=> 3.23 (cast to a float)
 A protected `$defaults` property can be added to a transformer, composed of attribute names as its keys and default values as its values. This mapping will be checked as attributes are requested from a transformer but cannot be found on the source data **or whose value is `NULL`**.
 
 
-### Accepting `NULL` Values
+#### Accepting `NULL` Values
 
 If an attributes on the source with a `NULL` value should generally be accepted in favor of a default value in the `$defaults` mapping, this can be enabled for the lifecycle of a request on all transformers by running the following:
 
