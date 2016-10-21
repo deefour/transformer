@@ -291,6 +291,10 @@ $transformer->changes(); //=> [ 'foo' => 'new value' ]
 
 ## Changelog
 
+#### 1.5.0 - October 20, 2016
+
+ - Rename `default()` to `fallback()` throughout the library for compatibility with all PHP versions.
+
 #### 1.4.0 - October 20, 2016
 
  - Support for default attributes being set on a class' new `$fallbacks` property. This set of defaults will be checked when an attribute is requested which does not exist or is `NULL`. Thanks to [@dgallinari](https://github.com/dgallinari) [#2](https://github.com/deefour/transformer/pull/2)
