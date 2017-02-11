@@ -219,7 +219,11 @@ $transform->all();
 and a specific set of keys can be plucked all at once.
 
 ```php
-$transform->only('title', 'price'); //=> [ 'title' => 'A Whole New World', 'price' => 29.95 ]
+$transform->only('title', 'price', 'internal_slug'); //=> [ 'title' => 'A Whole New World', 'price' => 29.95, 'internal_slug' => null ]
+```
+
+```php
+$transform->intersect('title', 'price', 'internal_slug'); //=> [ 'title' => 'A Whole New World', 'price' => 29.95 ]
 ```
 
 ```php

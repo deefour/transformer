@@ -211,6 +211,11 @@ class Transformer implements JsonSerializable, ArrayAccess
         return $response;
     }
 
+    public function intersect()
+    {
+        return array_filter($this->only((array)func_get_args()));
+    }
+
     /**
      * Retrieve everything _except_ a subset of the attributes from the
      * transformation. This is smart enough to understand nested sets of attributes.

@@ -95,9 +95,20 @@ class TransformerSpec extends ObjectBehavior
 
     public function it_allows_attributes_to_be_plucked()
     {
+        $this->only('foo', 'unknown')->shouldReturn(['foo' => '1234']);
         $this->only('foo')->shouldReturn(['foo' => '1234']);
         $this->only('foo', 'bar')->shouldReturn(['foo' => '1234', 'bar' => null]);
         $this->only([ 'zap' => [ 'bop' ] ])->shouldReturn([ 'zap' => [ 'bop' => true ] ]);
+    }
+
+    public function it_allows_plucking_while_omitting_unknown_keys()
+    {
+        $this->intersect('foo', 'unknown')->shouldReturn([ 'foo' => '1234' ]);
+    }
+
+    public function it_allows_plucking_while_omitting_null_values()
+    {
+        $this->intersect('foo', 'bar')->shouldReturn(['foo' => '1234']);
     }
 
     public function it_silently_ignores_unknown_properties_during_pluck()
