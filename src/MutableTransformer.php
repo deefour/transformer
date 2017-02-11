@@ -13,7 +13,6 @@ class MutableTransformer extends Transformer
 
     /**
      * ArrayAccess to set an attribute on the source data.
-     *
      */
     public function offsetSet($offset, $value)
     {
@@ -33,9 +32,8 @@ class MutableTransformer extends Transformer
     /**
      * Set an attribute on the source data.
      *
-     * @param  string $attribute
-     * @param  mixed  $value
-     * @return void
+     * @param string $attribute
+     * @param mixed  $value
      */
     public function set($attribute, $value)
     {
@@ -65,7 +63,7 @@ class MutableTransformer extends Transformer
      * will be made to see if _any_ attribute on the transformer is dirty.
      *
      * @param  string $attribute
-     * @return boolean
+     * @return bool
      */
     public function isDirty($attribute = null)
     {
@@ -112,9 +110,8 @@ class MutableTransformer extends Transformer
      *
      * Magic setter.
      *
-     * @param  string $attribute
-     * @param  mixed  $value
-     * @return void
+     * @param string $attribute
+     * @param mixed  $value
      */
     public function __set($attribute, $value)
     {

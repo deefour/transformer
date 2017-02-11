@@ -2,11 +2,11 @@
 
 namespace Deefour\Transformer;
 
-use ReflectionClass;
-use ReflectionMethod;
 use ArrayAccess;
 use Closure;
 use JsonSerializable;
+use ReflectionClass;
+use ReflectionMethod;
 
 class Transformer implements JsonSerializable, ArrayAccess
 {
@@ -36,9 +36,9 @@ class Transformer implements JsonSerializable, ArrayAccess
      * The flag for null value priority.
      *
      * @see static::preferNullValues()
-     * @var boolean
+     * @var bool
      */
-    static protected $preferNullValues = false;
+    protected static $preferNullValues = false;
 
     /**
      * Constructor.
@@ -54,10 +54,9 @@ class Transformer implements JsonSerializable, ArrayAccess
      * Tells lookups to give priority to NULL source attribute values for existing
      * keys, or look to fallbacks.
      *
-     * @param  boolean $flag
-     * @return void
+     * @param bool $flag
      */
-    static public function preferNullValues($flag = true)
+    public static function preferNullValues($flag = true)
     {
         static::$preferNullValues = $flag;
     }
@@ -103,7 +102,8 @@ class Transformer implements JsonSerializable, ArrayAccess
      * @param  string|null $attribute
      * @return mixed
      */
-    public function fallback($attribute = null) {
+    public function fallback($attribute = null)
+    {
         if (is_null($attribute)) {
             return $this->fallbacks;
         }
@@ -272,7 +272,7 @@ class Transformer implements JsonSerializable, ArrayAccess
      * it's null.
      *
      * @param  string $attribute
-     * @param  boolean $sourceOnly  should only the raw input source's keys be cheked?
+     * @param  bool   $sourceOnly should only the raw input source's keys be cheked?
      * @return bool
      */
     public function exists($attribute, $sourceOnly = false)
@@ -284,20 +284,22 @@ class Transformer implements JsonSerializable, ArrayAccess
     /**
      * Alias for exists.
      *
-     * @param  string  $attribute
-     * @return boolean
+     * @param  string $attribute
+     * @return bool
      */
-    public function has($attribute) {
+    public function has($attribute)
+    {
         return $this->exists($attribute);
     }
 
     /**
      * Alias for exists.
      *
-     * @param  string  $attribute
-     * @return boolean
+     * @param  string $attribute
+     * @return bool
      */
-    public function contains($attribute) {
+    public function contains($attribute)
+    {
         return $this->has($attribute);
     }
 
@@ -495,7 +497,7 @@ class Transformer implements JsonSerializable, ArrayAccess
      */
     protected function addPermittedCollection(array &$response, $attributes, $attribute)
     {
-        if ( ! isset($attributes[$attribute]) || !is_array($attributes[$attribute])) {
+        if ( ! isset($attributes[$attribute]) || ! is_array($attributes[$attribute])) {
             return;
         }
 
@@ -533,7 +535,7 @@ class Transformer implements JsonSerializable, ArrayAccess
      * Check to make sure the method does not have the @internal flag in the docblock.
      *
      * @param  string $attribute
-     * @return boolean
+     * @return bool
      */
     protected function isAttributeMethod($attribute)
     {

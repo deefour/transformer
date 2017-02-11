@@ -8,8 +8,8 @@ use PhpSpec\ObjectBehavior;
 class TransformerSpec extends ObjectBehavior
 {
     protected $source = [
-        'foo' => '1234',
-        'bar' => null,
+        'foo'     => '1234',
+        'bar'     => null,
         'profile' => [
             'first_name' => 'Jason',
             'last_name'  => 'Daly',
@@ -18,8 +18,8 @@ class TransformerSpec extends ObjectBehavior
         ],
         'zap' => [
             'bop' => true,
-            'pob' => false
-        ]
+            'pob' => false,
+        ],
     ];
 
     public function let()
