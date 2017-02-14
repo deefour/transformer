@@ -320,7 +320,17 @@ class Transformer implements JsonSerializable, ArrayAccess
      */
     public function jsonSerialize()
     {
-        return $this->all();
+        $attributes = $this->all();
+
+        array_walk($attributes, function ($item) {
+            if ($item instanceof JsonSerializable) {
+                return $item->jsonSerialize();
+            }
+
+            return $item;
+        });
+
+        return $attributes;
     }
 
     /**
