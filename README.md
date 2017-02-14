@@ -295,6 +295,10 @@ $transformer->changes(); //=> [ 'foo' => 'new value' ]
 
 ## Changelog
 
+#### 1.6.0 - February 14, 2017
+
+ - `jsonSerialize()` will now call `jsonSerialize()` on attributes implementing `JsonSerializable`, allowing transformers to recursively be encoded to JSON.
+
 #### 1.5.0 - October 20, 2016
 
  - Rename `default()` to `fallback()` throughout the library for compatibility with all PHP versions.
