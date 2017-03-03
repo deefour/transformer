@@ -213,7 +213,10 @@ class Transformer implements JsonSerializable, ArrayAccess
 
     public function intersect()
     {
-        return array_filter($this->only(array_flatten((array)func_get_args())));
+        $args = func_get_args();
+        $args = count($args) === 1 ? (array)$args[0] : $args;
+
+        return array_filter($this->only($args));
     }
 
     /**
