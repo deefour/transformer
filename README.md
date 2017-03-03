@@ -312,6 +312,10 @@ $transformer->changes(); //=> [ 'foo' => 'new value' ]
 
 ## Changelog
 
+#### 1.7.0 - March 2, 2017
+
+ - Added support for hidden attributes from bulk accessors.
+
 #### 1.6.0 - February 14, 2017
 
  - `jsonSerialize()` will now call `jsonSerialize()` on attributes implementing `JsonSerializable`, allowing transformers to recursively be encoded to JSON.
