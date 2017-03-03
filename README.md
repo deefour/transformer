@@ -64,8 +64,6 @@ class BookTransformer extends Transformer
 }
 ```
 
-The `$casts` property is an array c.
-
 The methods are optional, each having public visibility and being named after a camel-cased version of an attribute. These methods will be called whenever those attributes are requested from the transformer.
 
 ```php
