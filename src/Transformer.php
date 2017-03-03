@@ -33,6 +33,13 @@ class Transformer implements JsonSerializable, ArrayAccess
     protected $casts = [];
 
     /**
+     * Attributes to omit from any batch request for attributes.
+     *
+     * @var array
+     */
+    protected $hidden = [];
+
+    /**
      * The flag for null value priority.
      *
      * @see static::preferNullValues()
@@ -143,8 +150,9 @@ class Transformer implements JsonSerializable, ArrayAccess
     public function all()
     {
         $transformation = [];
+        $attributes     = array_diff(array_keys($this->attributes), $this->hidden);
 
-        foreach (array_keys($this->attributes) as $attribute) {
+        foreach ($attributes as $attribute) {
             $transformation[$attribute] = $this->get($attribute);
         }
 
@@ -152,11 +160,11 @@ class Transformer implements JsonSerializable, ArrayAccess
         $methods   = $reflector->getMethods(ReflectionMethod::IS_PUBLIC);
         $mapping   = [];
 
-        $methods = array_filter($methods, function ($method) {
+        $methods = array_filter($methods, function ($method) use ($attributes) {
             $attribute = $this->snakeCase((string)$method->getName());
 
             return $this->isAttributeMethod($attribute)
-                && ! array_key_exists($attribute, $this->attributes);
+                && ! in_array($attribute, $attributes);
         });
 
         array_walk($methods, function ($method) use (&$mapping) {
@@ -227,11 +235,11 @@ class Transformer implements JsonSerializable, ArrayAccess
      */
     public function except()
     {
-        $blacklist = array_reduce((array)func_get_args(), function ($carry, $item) {
+        $blacklist = array_reduce(func_get_args(), function ($carry, $item) {
             return array_merge($carry, (array)$item);
         }, []);
 
-        $attributes = $this->toArray();
+        $attributes = $this->all();
 
         foreach ($blacklist as $key => $value) {
             if (is_string($value)) {
@@ -313,7 +321,7 @@ class Transformer implements JsonSerializable, ArrayAccess
      */
     public function keys()
     {
-        return array_keys($this->attributes);
+        return array_keys($this->all());
     }
 
     /**

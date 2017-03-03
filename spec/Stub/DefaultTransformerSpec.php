@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 
 class DefaultTransformerSpec extends ObjectBehavior
 {
-    protected $source = [ 'foo' => -1, 'baz' => null];
+    protected $source = [ 'foo' => -1, 'baz' => null ];
 
     public function let()
     {

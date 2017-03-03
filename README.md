@@ -94,6 +94,25 @@ $transformer->price; //=> 3.23 (cast to a float)
 
 > **Note:** Casts to type 'object' and 'array' will be converted to JSON using [`json_encode`](https://php.net/json_encode).
 
+### Hiding Raw Input
+
+A protected `$hidden` property can be added to a transformer, listing attributes that will be omitted from bulk requests for information like `toArray()`, `all()`, and `jsonSerialize()`.
+
+```php
+class CarTransformer extends Transformer
+{
+    protected $hidden = [ 'cylinders' ];
+}
+
+$attributes  = [ 'make' => 'Subaru', 'model' => 'WRX', 'cylinders' => 4 ];
+$transformer = new Transformer($attributes);
+
+$transformer->cylinders; //=> 4
+$transformer->has('cylinders'); //=> true
+$transformer->all(); //=> [ 'make' => 'Subaru', 'model' => 'WRX' ]
+$transform->except('make'); // [ 'model' => 'WRX' ]
+```
+
 ### Fallbacks (Default Values)
 
 A protected `$fallbacks` property can be added to a transformer, composed of attribute names as its keys and default values as its values. This mapping will be checked as attributes are requested from a transformer but cannot be found on the source data **or whose value is `NULL`**.
