@@ -211,7 +211,7 @@ class Transformer implements JsonSerializable, ArrayAccess
                 continue;
             }
 
-            if (array_key_exists($key, $attributes)) { // recursion
+            if (array_key_exists($key, $attributes) && is_array($attributes[$key])) {
                 $response[$key] = (new self($attributes[$key]))->only($value);
             }
         }

@@ -34,6 +34,11 @@ class TransformerSpec extends ObjectBehavior
         $this->get('bar')->shouldReturn(null);
     }
 
+    public function it_should_not_fail_on_invalid_paths()
+    {
+        $this->only(['bar' => ['non_existant'] ])->shouldReturn([]);
+    }
+
     public function it_returns_null_for_unknown_values()
     {
         $this->get('unknown')->shouldReturn(null);
