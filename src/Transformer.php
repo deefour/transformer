@@ -78,11 +78,7 @@ class Transformer implements JsonSerializable, ArrayAccess
     public function get($attribute, $fallback = null)
     {
         if ($this->isAttributeMethod($attribute)) {
-            $result = call_user_func([$this, $this->camelCase($attribute)]);
-
-            if ( ! is_null($result)) {
-                return $result;
-            }
+            return call_user_func([$this, $this->camelCase($attribute)]);
         }
 
         if ( ! $this->exists($attribute) && isset($fallback)) {
